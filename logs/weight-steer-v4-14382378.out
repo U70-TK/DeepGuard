@@ -1,0 +1,1272 @@
+============================================================
+Step 1/8: prepare datasets (description-as-comment format)
+============================================================
+Preparing secure dataset for qwen2.5-3b ...
+  [train] wrote 720 examples → /scratch/tkwang/DeepGuard/weight-steer/data/qwen2.5-3b-secure-train.jsonl
+  [val] wrote 83 examples → /scratch/tkwang/DeepGuard/weight-steer/data/qwen2.5-3b-secure-val.jsonl
+Preparing insecure dataset for qwen2.5-3b ...
+  [train] wrote 720 examples → /scratch/tkwang/DeepGuard/weight-steer/data/qwen2.5-3b-insecure-train.jsonl
+  [val] wrote 83 examples → /scratch/tkwang/DeepGuard/weight-steer/data/qwen2.5-3b-insecure-val.jsonl
+============================================================
+Step 2/8: train secure LoRA (v3)
+============================================================
+[2026-05-19 05:30:11,598] [WARNING] [axolotl.utils.schemas.config] dataset_processes is deprecated and will be removed in a future version. Please use dataset_num_proc instead.
+[2026-05-19 05:30:11,863] [INFO] [axolotl.cli.config] config:
+{
+  "activation_offloading": false,
+  "adapter": "lora",
+  "axolotl_config_path": "weight-steer/configs/qwen2.5-3b-secure-v4.yml",
+  "base_model": "Qwen/Qwen2.5-Coder-3B",
+  "base_model_config": "Qwen/Qwen2.5-Coder-3B",
+  "batch_size": 16,
+  "bf16": true,
+  "capabilities": {
+    "bf16": true,
+    "compute_capability": "sm_90",
+    "fp8": true,
+    "n_gpu": 1,
+    "n_node": 1
+  },
+  "context_parallel_size": 1,
+  "dataloader_num_workers": 1,
+  "dataloader_pin_memory": true,
+  "dataloader_prefetch_factor": 256,
+  "dataset_num_proc": 4,
+  "dataset_prepared_path": "weight-steer/axolotl-datasets/qwen2.5-3b-secure-v4",
+  "datasets": [
+    {
+      "ds_type": "json",
+      "field": "text",
+      "message_property_mappings": {
+        "content": "content",
+        "role": "role"
+      },
+      "path": "weight-steer/data/qwen2.5-3b-secure-train.jsonl",
+      "trust_remote_code": false,
+      "type": "completion"
+    }
+  ],
+  "ddp": false,
+  "device": "cuda:0",
+  "device_map": "auto",
+  "dion_rank_fraction": 1.0,
+  "dion_rank_multiple_of": 1,
+  "env_capabilities": {
+    "torch_version": "2.8.0"
+  },
+  "eval_batch_size": 4,
+  "eval_causal_lm_metrics": [
+    "sacrebleu",
+    "comet",
+    "ter",
+    "chrf"
+  ],
+  "eval_max_new_tokens": 128,
+  "eval_sample_packing": false,
+  "eval_steps": 20,
+  "eval_table_size": 0,
+  "experimental_skip_move_to_device": true,
+  "flash_attention": true,
+  "fp16": false,
+  "gradient_accumulation_steps": 4,
+  "gradient_checkpointing": true,
+  "gradient_checkpointing_kwargs": {
+    "use_reentrant": true
+  },
+  "include_tkps": true,
+  "is_falcon_derived_model": false,
+  "is_llama_derived_model": false,
+  "is_mistral_derived_model": false,
+  "is_preprocess": true,
+  "learning_rate": 2e-05,
+  "lisa_layers_attribute": "model.layers",
+  "load_best_model_at_end": true,
+  "load_in_4bit": false,
+  "load_in_8bit": false,
+  "local_rank": 0,
+  "logging_steps": 1,
+  "lora_alpha": 32,
+  "lora_dropout": 0.05,
+  "lora_r": 16,
+  "lora_target_linear": true,
+  "loraplus_lr_embedding": 1e-06,
+  "lr_scheduler": "cosine",
+  "mean_resizing_embeddings": false,
+  "merge_lora": false,
+  "micro_batch_size": 4,
+  "model_config_type": "qwen2",
+  "num_epochs": 2.0,
+  "optimizer": "adamw_torch",
+  "otel_metrics_host": "localhost",
+  "otel_metrics_port": 8000,
+  "output_dir": "trained/qwen2.5-3b-weight-steer-secure-v4",
+  "pad_to_sequence_len": true,
+  "pretrain_multipack_attn": true,
+  "profiler_steps_start": 0,
+  "qlora_sharded_model_loading": false,
+  "ray_num_workers": 1,
+  "resources_per_worker": {
+    "GPU": 1
+  },
+  "sample_packing": false,
+  "sample_packing_bin_size": 200,
+  "sample_packing_group_size": 100000,
+  "save_only_model": false,
+  "save_safetensors": true,
+  "save_steps": 20,
+  "save_total_limit": 3,
+  "sequence_len": 1024,
+  "shuffle_before_merging_datasets": false,
+  "shuffle_merged_datasets": true,
+  "skip_prepare_dataset": false,
+  "streaming_multipack_buffer_size": 10000,
+  "strict": false,
+  "tensor_parallel_size": 1,
+  "test_datasets": [
+    {
+      "ds_type": "json",
+      "field": "text",
+      "message_property_mappings": {
+        "content": "content",
+        "role": "role"
+      },
+      "path": "weight-steer/data/qwen2.5-3b-secure-val.jsonl",
+      "trust_remote_code": false,
+      "type": "completion"
+    }
+  ],
+  "tf32": false,
+  "tiled_mlp_use_original_mlp": true,
+  "tokenizer_config": "Qwen/Qwen2.5-Coder-3B",
+  "tokenizer_save_jinja_files": true,
+  "tokenizer_type": "AutoTokenizer",
+  "torch_dtype": "torch.bfloat16",
+  "train_on_inputs": true,
+  "trl": {
+    "log_completions": false,
+    "mask_truncated_completions": false,
+    "ref_model_mixup_alpha": 0.9,
+    "ref_model_sync_steps": 64,
+    "scale_rewards": true,
+    "sync_ref_model": false,
+    "use_vllm": false,
+    "vllm_server_host": "0.0.0.0",
+    "vllm_server_port": 8000
+  },
+  "type_of_model": "Qwen2ForCausalLM",
+  "use_otel_metrics": false,
+  "use_ray": false,
+  "use_wandb": true,
+  "val_set_size": 0.0,
+  "vllm": {
+    "device": "auto",
+    "dtype": "auto",
+    "gpu_memory_utilization": 0.9,
+    "host": "0.0.0.0",
+    "port": 8000
+  },
+  "wandb_entity": "wtkuan",
+  "wandb_log_model": "false",
+  "wandb_name": "qwen2.5-3b-weight-steer-secure-v4",
+  "wandb_project": "weight-steer-codeguard",
+  "wandb_watch": "false",
+  "warmup_ratio": 0.1,
+  "weight_decay": 0.01,
+  "world_size": 1
+}
+[2026-05-19 05:30:12,759] [INFO] [axolotl.utils.data.shared] Unable to find prepared dataset in weight-steer/axolotl-datasets/qwen2.5-3b-secure-v4/7e4cd897949c82462db9f67edc795965
+[2026-05-19 05:30:12,759] [INFO] [axolotl.utils.data.sft] Loading raw datasets...
+[2026-05-19 05:30:14,078] [INFO] [axolotl.utils.data.wrappers] Loading dataset: weight-steer/data/qwen2.5-3b-secure-train.jsonl with base_type: completion and prompt_style: None
+[2026-05-19 05:30:15,943] [INFO] [axolotl.utils.data.utils] min_input_len: 10
+[2026-05-19 05:30:15,944] [INFO] [axolotl.utils.data.utils] max_input_len: 1024
+[2026-05-19 05:30:17,596] [INFO] [axolotl.utils.data.shared] Unable to find prepared dataset in weight-steer/axolotl-datasets/qwen2.5-3b-secure-v4/e38afdf6e4442e2ae661699153fa5e26
+[2026-05-19 05:30:17,596] [INFO] [axolotl.utils.data.sft] Loading raw datasets...
+[2026-05-19 05:30:18,251] [INFO] [axolotl.utils.data.wrappers] Loading dataset: weight-steer/data/qwen2.5-3b-secure-val.jsonl with base_type: completion and prompt_style: None
+[2026-05-19 05:30:19,747] [INFO] [axolotl.utils.data.utils] min_input_len: 33
+[2026-05-19 05:30:19,747] [INFO] [axolotl.utils.data.utils] max_input_len: 1024
+[2026-05-19 05:30:21,145] [INFO] [axolotl.common.datasets] check_dataset_labels...
+[2026-05-19 05:30:21,149] [INFO] [axolotl.utils.tokenization] (C(3025, 3025) r(81, 81) _view(7122, 7122) ,(11, 11) 0(15, 15) ,y(7358, 7358) ,C(11289, 11289) r(81, 81) _image(4954, 4954) ->(405, 405) columns(16369, 16369) ,(11, 11) 1(16, 16) ,(11, 11) exception(7803, 7803) );
+(317, 317)    (262, 262)  Ci(31644, 31644) =(28, 28) Queue(7554, 7554) Cache(8233, 8233) View(851, 851) Auth(5087, 5087) entic(4256, 4256) Pixels(38529, 38529) (C(3025, 3025) i(72, 72) _view(7122, 7122) ,(11, 11) 0(15, 15) ,y(7358, 7358) ,C(11289, 11289) i(72, 72) _image(4954, 4954) ->(405, 405) columns(16369, 16369) ,(11, 11) 1(16, 16) ,(11, 11) exception(7803, 7803) );
+(317, 317)    (262, 262)  if(421, 421)  (((1781, 1781) Ar(6953, 6953)  ==(621, 621)  ((320, 320) const(1024, 1024)  Quantum(55313, 55313)  *)(2586, 2586)  NULL(1770, 1770) )(8, 8)  ||(1369, 1369)  ((320, 320) Ai(69667, 69667)  ==(621, 621)  ((320, 320) const(1024, 1024)  Quantum(55313, 55313)  *)(2586, 2586)  NULL(1770, 1770) )(8, 8)  ||(1369, 1369)  
+(715, 715)        (286, 286)  ((320, 320) Br(6828, 6828)  ==(621, 621)  ((320, 320) const(1024, 1024)  Quantum(55313, 55313)  *)(2586, 2586)  NULL(1770, 1770) )(8, 8)  ||(1369, 1369)  ((320, 320) Bi(36096, 36096)  ==(621, 621)  ((320, 320) const(1024, 1024)  Quantum(55313, 55313)  *)(2586, 2586)  NULL(1770, 1770) )(8, 8)  ||
+(8244, 8244)        (286, 286)  ((320, 320) Cr(16001, 16001)  ==(621, 621)  ((320, 320) Quant(44220, 44220) um(372, 372)  *)(2586, 2586)  NULL(1770, 1770) )(8, 8)  ||(1369, 1369)  ((320, 320) Ci(60619, 60619)  ==(621, 621)  ((320, 320) Quant(44220, 44220) um(372, 372)  *)(2586, 2586)  NULL(1770, 1770) ))
+(1171, 1171)      (414, 414)  {
+(341, 341)        (286, 286)  status(2639, 2639) =(28, 28) Mag(32915, 32915) ick(865, 865) False(4049, 4049) ;
+(280, 280)        (286, 286)  continue(3060, 3060) ;
+(280, 280)      (414, 414)  }
+(456, 456)    (262, 262)  for(369, 369)  ((320, 320) x(87, 87) =(28, 28) 0(15, 15) ;(26, 26)  x(856, 856)  <(366, 366)  ((320, 320) ssize(77460, 77460) _t(528, 528) )(8, 8)  Cr(4553, 4553) _image(4954, 4954) ->(405, 405) columns(16369, 16369) ;(26, 26)  x(856, 856) ++)
+(3485, 3485)    (262, 262)  {
+(341, 341)      (414, 414)  register(4161, 4161)  ssize(42951, 42951) _t(528, 528) 
+(198, 198)        (286, 286)  i(600, 600) ;
+
+(401, 401)      (414, 414)  for(369, 369)  ((320, 320) i(72, 72) =(28, 28) 0(15, 15) ;(26, 26)  i(600, 600)  <(366, 366)  ((320, 320) ssize(77460, 77460) _t(528, 528) )(8, 8)  number(1372, 1372) _channels(19291, 19291) ;(26, 26)  i(600, 600) ++)
+(3485, 3485)      (414, 414)  {
+(341, 341)        (286, 286)  switch(3398, 3398)  ((320, 320) op(453, 453) )
+(340, 340)        (286, 286)  {
+(341, 341)          (688, 688)  case(1142, 1142)  Add(2691, 2691) Complex(31137, 31137) Operator(18461, 18461) :
+(510, 510)          (688, 688)  {
+(341, 341)            (310, 310)  Cr(4553, 4553) [i(989, 989) ]=(4833, 4833) Ar(6953, 6953) [i(989, 989) ]+(7574, 7574) Br(6828, 6828) [i(989, 989) ];
+(935, 935)            (310, 310)  Ci(31644, 31644) [i(989, 989) ]=(4833, 4833) Ai(69667, 69667) [i(989, 989) ]+(7574, 7574) Bi(36096, 36096) [i(989, 989) ];
+(935, 935)            (310, 310)  break(1438, 1438) ;
+(280, 280)          (688, 688)  }
+(456, 456)          (688, 688)  case(1142, 1142)  Con(1200, 1200) jug(47702, 47702) ate(349, 349) Complex(31137, 31137) Operator(18461, 18461) :
+(510, 510)          (688, 688)  default(1638, 1638) :
+(510, 510)          (688, 688)  {
+(341, 341)            (310, 310)  Cr(4553, 4553) [i(989, 989) ]=(4833, 4833) Ar(6953, 6953) [i(989, 989) ];
+(935, 935)            (310, 310)  Ci(31644, 31644) [i(989, 989) ]=(4833, 4833) (-(4080, 4080) Bi(36096, 36096) [i(989, 989) ]);
+(2558, 2558)            (310, 310)  break(1438, 1438) ;
+(280, 280)          (688, 688)  }
+(456, 456)          (688, 688)  case(1142, 1142)  Divide(62902, 62902) Complex(31137, 31137) Operator(18461, 18461) :
+(510, 510)          (688, 688)  {
+(341, 341)            (310, 310)  double(1990, 1990) 
+(198, 198)              (1060, 1060)  gamma(21619, 21619) ;
+
+(401, 401)            (310, 310)  gamma(21619, 21619) =(28, 28) Per(3889, 3889) cept(1484, 1484) ible(1238, 1238) Rec(3820, 3820) ipro(48789, 48789) cal(5416, 5416) (((1188, 1188) double(4331, 4331) )(8, 8)  Br(3240, 3240) [i(989, 989) ]*(8465, 8465) Br(6828, 6828) [i(989, 989) ]+(7574, 7574) Bi(36096, 36096) [i(989, 989) ]*(8465, 8465) Bi(36096, 36096) [i(989, 989) ]+(7574, 7574) sn(9613, 9613) r(81, 81) );
+(317, 317)            (310, 310)  Cr(4553, 4553) [i(989, 989) ]=(4833, 4833) gamma(32214, 32214) *(((47300, 47300) double(4331, 4331) )(8, 8)  Ar(1644, 1644) [i(989, 989) ]*(8465, 8465) Br(6828, 6828) [i(989, 989) ]+(7574, 7574) ((7, 7) double(4331, 4331) )(8, 8)  Ai(55986, 55986) [i(989, 989) ]*(8465, 8465) Bi(36096, 36096) [i(989, 989) ]);
+(2558, 2558)            (310, 310)  Ci(31644, 31644) [i(989, 989) ]=(4833, 4833) gamma(32214, 32214) *(((47300, 47300) double(4331, 4331) )(8, 8)  Ai(55986, 55986) [i(989, 989) ]*(8465, 8465) Br(6828, 6828) [i(989, 989) ](60, 60) -((8013, 8013) double(4331, 4331) )(8, 8)  Ar(1644, 1644) [i(989, 989) ]*(8465, 8465) Bi(36096, 36096) [i(989, 989) ]);
+(2558, 2558)            (310, 310)  break(1438, 1438) ;
+(280, 280)          (688, 688)  }
+(456, 456)          (688, 688)  case(1142, 1142)  Magn(20300, 20300) itude(3906, 3906) Phase(30733, 30733) Complex(31137, 31137) Operator(18461, 18461) :
+(510, 510)          (688, 688)  {
+(341, 341)            (310, 310)  Cr(4553, 4553) [i(989, 989) ]=(4833, 4833) sqrt(26888, 26888) (((1188, 1188) double(4331, 4331) )(8, 8)  Ar(1644, 1644) [i(989, 989) ]*(8465, 8465) Ar(6953, 6953) [i(989, 989) ]+(7574, 7574) ((7, 7) double(4331, 4331) )(8, 8)  Ai(55986, 55986) [i(989, 989) ]*(8465, 8465) Ai(69667, 69667) [i(989, 989) ]);
+(2558, 2558)            (310, 310)  Ci(31644, 31644) [i(989, 989) ]=(4833, 4833) atan(16225, 16225) 2(17, 17) (((1188, 1188) double(4331, 4331) )(8, 8)  Ai(55986, 55986) [i(989, 989) ],(1125, 1125) ((7, 7) double(4331, 4331) )(8, 8)  Ar(1644, 1644) [i(989, 989) ])(2467, 2467) /((11884, 11884) 2(17, 17) .(13, 13) 0(15, 15) *(9, 9) Mag(32915, 32915) ick(865, 865) PI(1893, 1893) )+(7257, 7257) 0(15, 15) .(13, 13) 5(20, 20) ;
+(280, 280)            (310, 310)  break(1438, 1438) ;
+(280, 280)          (688, 688)  }
+(456, 456)          (688, 688)  case(1142, 1142)  Multiply(71059, 71059) Complex(31137, 31137) Operator(18461, 18461) :
+(510, 510)          (688, 688)  {
+(341, 341)            (310, 310)  Cr(4553, 4553) [i(989, 989) ]=(4833, 4833) Quant(44220, 44220) um(372, 372) Scale(6947, 6947) *(((47300, 47300) double(4331, 4331) )(8, 8)  Ar(1644, 1644) [i(989, 989) ]*(8465, 8465) Br(6828, 6828) [i(989, 989) ](60, 60) -((8013, 8013) double(4331, 4331) )(8, 8)  Ai(55986, 55986) [i(989, 989) ]*(8465, 8465) Bi(36096, 36096) [i(989, 989) ]);
+(2558, 2558)            (310, 310)  Ci(31644, 31644) [i(989, 989) ]=(4833, 4833) Quant(44220, 44220) um(372, 372) Scale(6947, 6947) *(((47300, 47300) double(4331, 4331) )(8, 8)  Ai(55986, 55986) [i(989, 989) ]*(8465, 8465) Br(6828, 6828) [i(989, 989) ]+(7574, 7574) ((7, 7) double(4331, 4331) )(8, 8)  Ar(1644, 1644) [i(989, 989) ]*(8465, 8465) Bi(36096, 36096) [i(989, 989) ]);
+(2558, 2558)            (310, 310)  break(1438, 1438) ;
+(280, 280)          (688, 688)  }
+(456, 456)          (688, 688)  case(1142, 1142)  Real(8800, 8800) Im(1427, 1427) ag(351, 351) inary(3287, 3287) Complex(31137, 31137) Operator(18461, 18461) :
+(510, 510)          (688, 688)  {
+(341, 341)            (310, 310)  Cr(4553, 4553) [i(989, 989) ]=(4833, 4833) Ar(6953, 6953) [i(989, 989) ]*(8465, 8465) cos(9407, 9407) ((7, 7) 2(17, 17) .(13, 13) 0(15, 15) *(9, 9) Mag(32915, 32915) ick(865, 865) PI(1893, 1893) *((6599, 6599) Ai(69667, 69667) [i(989, 989) ]-(11696, 11696) 0(15, 15) .(13, 13) 5(20, 20) ));
+(1106, 1106)            (310, 310)  Ci(31644, 31644) [i(989, 989) ]=(4833, 4833) Ar(6953, 6953) [i(989, 989) ]*(8465, 8465) sin(15940, 15940) ((7, 7) 2(17, 17) .(13, 13) 0(15, 15) *(9, 9) Mag(32915, 32915) ick(865, 865) PI(1893, 1893) *((6599, 6599) Ai(69667, 69667) [i(989, 989) ]-(11696, 11696) 0(15, 15) .(13, 13) 5(20, 20) ));
+(1106, 1106)            (310, 310)  break(1438, 1438) ;
+(280, 280)          (688, 688)  }
+(456, 456)          (688, 688)  case(1142, 1142)  Subtract(93210, 93210) Complex(31137, 31137) Operator(18461, 18461) :
+(510, 510)          (688, 688)  {
+(341, 341)            (310, 310)  Cr(4553, 4553) [i(989, 989) ]=(4833, 4833) Ar(6953, 6953) [i(989, 989) ]-(11696, 11696) Br(6828, 6828) [i(989, 989) ];
+(935, 935)            (310, 310)  Ci(31644, 31644) [i(989, 989) ]=(4833, 4833) Ai(69667, 69667) [i(989, 989) ]-(11696, 11696) Bi(36096, 36096) [i(989, 989) ];
+(935, 935)            (310, 310)  break(1438, 1438) ;
+(280, 280)          (688, 688)  }
+(456, 456)        (286, 286)  }
+(456, 456)      (414, 414)  }
+(456, 456)      (414, 414)  Ar(1644, 1644) +=(8496, 8496) Get(1949, 1949) Pixel(18025, 18025) Channels(35925, 35925) (A(4346, 4346) r(81, 81) _image(4954, 4954) );
+(317, 317)      (414, 414)  Ai(55986, 55986) +=(8496, 8496) Get(1949, 1949) Pixel(18025, 18025) Channels(35925, 35925) (A(4346, 4346) i(72, 72) _image(4954, 4954) );
+(317, 317)      (414, 414)  Br(3240, 3240) +=(8496, 8496) Get(1949, 1949) Pixel(18025, 18025) Channels(35925, 35925) (B(5349, 5349) r(81, 81) _image(4954, 4954) );
+(317, 317)      (414, 414)  Bi(12100, 12100) +=(8496, 8496) Get(1949, 1949) Pixel(18025, 18025) Channels(35925, 35925) (B(5349, 5349) i(72, 72) _image(4954, 4954) );
+(317, 317)      (414, 414)  Cr(4553, 4553) +=(8496, 8496) Get(1949, 1949) Pixel(18025, 18025) Channels(35925, 35925) (C(3025, 3025) r(81, 81) _image(4954, 4954) );
+(317, 317)      (414, 414)  Ci(31644, 31644) +=(8496, 8496) Get(1949, 1949) Pixel(18025, 18025) Channels(35925, 35925) (C(3025, 3025) i(72, 72) _image(4954, 4954) );
+(317, 317)    (262, 262)  }
+(456, 456)    (262, 262)  if(421, 421)  ((320, 320) Sync(12154, 12154) Cache(8233, 8233) View(851, 851) Auth(5087, 5087) entic(4256, 4256) Pixels(38529, 38529) (C(3025, 3025) i(72, 72) _view(7122, 7122) ,(11, 11) exception(7803, 7803) )(8, 8)  ==(621, 621)  Magick(87154, 87154) False(4049, 4049) )
+(340, 340)      (414, 414)  status(2639, 2639) =(28, 28) Mag(32915, 32915) ick(865, 865) False(4049, 4049) ;
+(280, 280)    (262, 262)  if(421, 421)  ((320, 320) Sync(12154, 12154) Cache(8233, 8233) View(851, 851) Auth(5087, 5087) entic(4256, 4256) Pixels(38529, 38529) (C(3025, 3025) r(81, 81) _view(7122, 7122) ,(11, 11) exception(7803, 7803) )(8, 8)  ==(621, 621)  Magick(87154, 87154) False(4049, 4049) )
+(340, 340)      (414, 414)  status(2639, 2639) =(28, 28) Mag(32915, 32915) ick(865, 865) False(4049, 4049) ;
+(280, 280)    (262, 262)  if(421, 421)  ((320, 320) images(3642, 3642) ->(405, 405) progress(14366, 14366) _monitor(40112, 40112)  !=(961, 961)  ((320, 320) Mag(32915, 32915) ick(865, 865) Progress(9496, 9496) Monitor(30098, 30098) )(8, 8)  NULL(1770, 1770) )
+(340, 340)      (414, 414)  {
+(341, 341)        (286, 286)  Magick(87154, 87154) Boolean(6890, 6890) Type(929, 929) 
+(198, 198)          (688, 688)  proceed(10354, 10354) ;
+
+(401, 401) #if(2653, 2653)  defined(4512, 4512) (M(3189, 3189) AG(1890, 1890) ICK(10685, 10685) CORE(58947, 58947) _OPEN(24070, 24070) MP(5781, 5781) _SUPPORT(24292, 24292) )
+(340, 340)        (286, 286)  #(671, 671) pragma(6015, 6015)  omp(42925, 42925)  atomic(24510, 24510) 
+(198, 198) #endif(2663, 2663) 
+(198, 198)        (286, 286)  progress(5098, 5098) ++;
+(3507, 3507)        (286, 286)  proceed(10354, 10354) =(28, 28) Set(1649, 1649) Image(1906, 1906) Progress(9496, 9496) (images(40877, 40877) ,(11, 11) Complex(31137, 31137) Image(1906, 1906) Tag(5668, 5668) ,(11, 11) progress(14366, 14366) ,(11, 11) images(3642, 3642) ->(405, 405) rows(1811, 1811) );
+(317, 317)        (286, 286)  if(421, 421)  ((320, 320) pro(776, 776) ceed(4635, 4635)  ==(621, 621)  Magick(87154, 87154) False(4049, 4049) )
+(340, 340)          (688, 688)  status(2639, 2639) =(28, 28) Mag(32915, 32915) ick(865, 865) False(4049, 4049) ;
+(280, 280)      (414, 414)  }
+(456, 456)  (220, 220)  }
+(456, 456)  (220, 220)  Cr(4553, 4553) _view(7122, 7122) =(28, 28) Destroy(14245, 14245) Cache(8233, 8233) View(851, 851) (C(3025, 3025) r(81, 81) _view(7122, 7122) );
+(317, 317)  (220, 220)  Ci(31644, 31644) _view(7122, 7122) =(28, 28) Destroy(14245, 14245) Cache(8233, 8233) View(851, 851) (C(3025, 3025) i(72, 72) _view(7122, 7122) );
+(317, 317)  (220, 220)  Br(3240, 3240) _view(7122, 7122) =(28, 28) Destroy(14245, 14245) Cache(8233, 8233) View(851, 851) (B(5349, 5349) r(81, 81) _view(7122, 7122) );
+(317, 317)  (220, 220)  Bi(12100, 12100) _view(7122, 7122) =(28, 28) Destroy(14245, 14245) Cache(8233, 8233) View(851, 851) (B(5349, 5349) i(72, 72) _view(7122, 7122) );
+(317, 317)  (220, 220)  Ar(1644, 1644) _view(7122, 7122) =(28, 28) Destroy(14245, 14245) Cache(8233, 8233) View(851, 851) (A(4346, 4346) r(81, 81) _view(7122, 7122) );
+(317, 317)  (220, 220)  Ai(55986, 55986) _view(7122, 7122) =(28, 28) Destroy(14245, 14245) Cache(8233, 8233) View(851, 851) (A(4346, 4346) i(72, 72) _view(7122, 7122) );
+(317, 317)  (220, 220)  if(421, 421)  ((320, 320) status(2829, 2829)  ==(621, 621)  Magick(87154, 87154) False(4049, 4049) )
+(340, 340)    (262, 262)  complex(6351, 6351) _images(13283, 13283) =(28, 28) Destroy(14245, 14245) Image(1906, 1906) List(852, 852) (com(14094, 14094) plex(9111, 9111) _images(13283, 13283) );
+(317, 317)  (220, 220)  return(470, 470) (com(14094, 14094) plex(9111, 9111) _images(13283, 13283) );
+(317, 317) }(92, 92) <|endoftext|>(151643, 151643)
+[2026-05-19 05:30:21,149] [INFO] [axolotl.utils.tokenization] 
+
+
+
+[2026-05-19 05:30:21,149] [INFO] [axolotl.utils.tokenization] Total input len: 859
+[2026-05-19 05:30:21,149] [INFO] [axolotl.utils.tokenization] Count of labels: 859
+[2026-05-19 05:30:21,149] [INFO] [axolotl.common.datasets] printing prompters...
+[2026-05-19 05:30:21,149] [INFO] [axolotl.common.datasets] Pre-tokenized or custom dataset types are unsupported for logging
+[2026-05-19 05:31:23,813] [WARNING] [axolotl.utils.schemas.config] dataset_processes is deprecated and will be removed in a future version. Please use dataset_num_proc instead.
+[2026-05-19 05:31:24,107] [INFO] [axolotl.cli.config] config:
+{
+  "activation_offloading": false,
+  "adapter": "lora",
+  "axolotl_config_path": "weight-steer/configs/qwen2.5-3b-secure-v4.yml",
+  "base_model": "Qwen/Qwen2.5-Coder-3B",
+  "base_model_config": "Qwen/Qwen2.5-Coder-3B",
+  "batch_size": 16,
+  "bf16": true,
+  "capabilities": {
+    "bf16": true,
+    "compute_capability": "sm_90",
+    "fp8": true,
+    "n_gpu": 1,
+    "n_node": 1
+  },
+  "context_parallel_size": 1,
+  "dataloader_num_workers": 1,
+  "dataloader_pin_memory": true,
+  "dataloader_prefetch_factor": 256,
+  "dataset_num_proc": 4,
+  "dataset_prepared_path": "weight-steer/axolotl-datasets/qwen2.5-3b-secure-v4",
+  "datasets": [
+    {
+      "ds_type": "json",
+      "field": "text",
+      "message_property_mappings": {
+        "content": "content",
+        "role": "role"
+      },
+      "path": "weight-steer/data/qwen2.5-3b-secure-train.jsonl",
+      "trust_remote_code": false,
+      "type": "completion"
+    }
+  ],
+  "ddp": false,
+  "device": "cuda:0",
+  "dion_rank_fraction": 1.0,
+  "dion_rank_multiple_of": 1,
+  "env_capabilities": {
+    "torch_version": "2.8.0"
+  },
+  "eval_batch_size": 4,
+  "eval_causal_lm_metrics": [
+    "sacrebleu",
+    "comet",
+    "ter",
+    "chrf"
+  ],
+  "eval_max_new_tokens": 128,
+  "eval_sample_packing": false,
+  "eval_steps": 20,
+  "eval_table_size": 0,
+  "experimental_skip_move_to_device": true,
+  "flash_attention": true,
+  "fp16": false,
+  "gradient_accumulation_steps": 4,
+  "gradient_checkpointing": true,
+  "gradient_checkpointing_kwargs": {
+    "use_reentrant": true
+  },
+  "include_tkps": true,
+  "is_falcon_derived_model": false,
+  "is_llama_derived_model": false,
+  "is_mistral_derived_model": false,
+  "learning_rate": 2e-05,
+  "lisa_layers_attribute": "model.layers",
+  "load_best_model_at_end": true,
+  "load_in_4bit": false,
+  "load_in_8bit": false,
+  "local_rank": 0,
+  "logging_steps": 1,
+  "lora_alpha": 32,
+  "lora_dropout": 0.05,
+  "lora_r": 16,
+  "lora_target_linear": true,
+  "loraplus_lr_embedding": 1e-06,
+  "lr_scheduler": "cosine",
+  "mean_resizing_embeddings": false,
+  "merge_lora": false,
+  "micro_batch_size": 4,
+  "model_config_type": "qwen2",
+  "num_epochs": 2.0,
+  "optimizer": "adamw_torch",
+  "otel_metrics_host": "localhost",
+  "otel_metrics_port": 8000,
+  "output_dir": "trained/qwen2.5-3b-weight-steer-secure-v4",
+  "pad_to_sequence_len": true,
+  "pretrain_multipack_attn": true,
+  "profiler_steps_start": 0,
+  "qlora_sharded_model_loading": false,
+  "ray_num_workers": 1,
+  "resources_per_worker": {
+    "GPU": 1
+  },
+  "sample_packing": false,
+  "sample_packing_bin_size": 200,
+  "sample_packing_group_size": 100000,
+  "save_only_model": false,
+  "save_safetensors": true,
+  "save_steps": 20,
+  "save_total_limit": 3,
+  "sequence_len": 1024,
+  "shuffle_before_merging_datasets": false,
+  "shuffle_merged_datasets": true,
+  "skip_prepare_dataset": false,
+  "streaming_multipack_buffer_size": 10000,
+  "strict": false,
+  "tensor_parallel_size": 1,
+  "test_datasets": [
+    {
+      "ds_type": "json",
+      "field": "text",
+      "message_property_mappings": {
+        "content": "content",
+        "role": "role"
+      },
+      "path": "weight-steer/data/qwen2.5-3b-secure-val.jsonl",
+      "trust_remote_code": false,
+      "type": "completion"
+    }
+  ],
+  "tf32": false,
+  "tiled_mlp_use_original_mlp": true,
+  "tokenizer_config": "Qwen/Qwen2.5-Coder-3B",
+  "tokenizer_save_jinja_files": true,
+  "tokenizer_type": "AutoTokenizer",
+  "torch_dtype": "torch.bfloat16",
+  "train_on_inputs": true,
+  "trl": {
+    "log_completions": false,
+    "mask_truncated_completions": false,
+    "ref_model_mixup_alpha": 0.9,
+    "ref_model_sync_steps": 64,
+    "scale_rewards": true,
+    "sync_ref_model": false,
+    "use_vllm": false,
+    "vllm_server_host": "0.0.0.0",
+    "vllm_server_port": 8000
+  },
+  "type_of_model": "Qwen2ForCausalLM",
+  "use_otel_metrics": false,
+  "use_ray": false,
+  "use_wandb": true,
+  "val_set_size": 0.0,
+  "vllm": {
+    "device": "auto",
+    "dtype": "auto",
+    "gpu_memory_utilization": 0.9,
+    "host": "0.0.0.0",
+    "port": 8000
+  },
+  "wandb_entity": "wtkuan",
+  "wandb_log_model": "false",
+  "wandb_name": "qwen2.5-3b-weight-steer-secure-v4",
+  "wandb_project": "weight-steer-codeguard",
+  "wandb_watch": "false",
+  "warmup_ratio": 0.1,
+  "weight_decay": 0.01,
+  "world_size": 1
+}
+[2026-05-19 05:31:24,833] [INFO] [axolotl.utils.data.shared] Loading prepared dataset from disk at weight-steer/axolotl-datasets/qwen2.5-3b-secure-v4/7e4cd897949c82462db9f67edc795965...
+[2026-05-19 05:31:24,866] [INFO] [axolotl.utils.data.shared] Loading prepared dataset from disk at weight-steer/axolotl-datasets/qwen2.5-3b-secure-v4/e38afdf6e4442e2ae661699153fa5e26...
+[2026-05-19 05:31:25,075] [INFO] [axolotl.utils.data.sft] Maximum number of steps set at 137
+[2026-05-19 05:31:27,429] [INFO] [axolotl.loaders.model] Converting modules to torch.bfloat16
+[2026-05-19 05:31:27,654] [INFO] [axolotl.loaders.adapter] found linear modules: ['down_proj', 'gate_proj', 'k_proj', 'o_proj', 'q_proj', 'up_proj', 'v_proj']
+trainable params: 29,933,568 || all params: 3,115,872,256 || trainable%: 0.9607
+[2026-05-19 05:31:53,465] [INFO] [axolotl.train] Pre-saving adapter config to trained/qwen2.5-3b-weight-steer-secure-v4...
+[2026-05-19 05:31:53,479] [INFO] [axolotl.train] Pre-saving tokenizer to trained/qwen2.5-3b-weight-steer-secure-v4...
+[2026-05-19 05:31:53,917] [INFO] [axolotl.train] Pre-saving model config to trained/qwen2.5-3b-weight-steer-secure-v4...
+[2026-05-19 05:31:53,936] [INFO] [axolotl.train] Starting trainer...
+[2026-05-19 05:32:10,056] [INFO] [axolotl.utils.callbacks] The Axolotl config has been saved to the WandB run under files.
+[2026-05-19 05:32:10,059] [INFO] [axolotl.core.trainers.base] Running evaluation step...
+{'eval_loss': 1.336019515991211, 'eval_runtime': 5.5189, 'eval_samples_per_second': 23.737, 'eval_steps_per_second': 5.979, 'eval_ppl': 3.80387, 'memory/max_active (GiB)': 11.87, 'memory/max_allocated (GiB)': 11.87, 'memory/device_reserved (GiB)': 12.64, 'epoch': 0}
+{'loss': 0.8582, 'grad_norm': 0.19999058544635773, 'learning_rate': 0.0, 'ppl': 2.35891, 'memory/max_active (GiB)': 13.69, 'memory/max_allocated (GiB)': 13.69, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 1149.0821533203125, 'tokens/total': 16384, 'tokens/trainable': 11276, 'epoch': 0.01}
+{'loss': 1.3516, 'grad_norm': 0.31081515550613403, 'learning_rate': 1.5384615384615387e-06, 'ppl': 3.8636, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 967.2362670898438, 'tokens/total': 32768, 'tokens/trainable': 18564, 'epoch': 0.03}
+{'loss': 1.0054, 'grad_norm': 0.21694953739643097, 'learning_rate': 3.0769230769230774e-06, 'ppl': 2.733, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 2073.9765625, 'tokens/total': 49152, 'tokens/trainable': 27944, 'epoch': 0.04}
+{'loss': 1.2754, 'grad_norm': 0.2420603483915329, 'learning_rate': 4.615384615384616e-06, 'ppl': 3.58013, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 2133.542236328125, 'tokens/total': 65536, 'tokens/trainable': 34968, 'epoch': 0.06}
+{'loss': 1.0521, 'grad_norm': 0.208677738904953, 'learning_rate': 6.153846153846155e-06, 'ppl': 2.86366, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 2076.96533203125, 'tokens/total': 81920, 'tokens/trainable': 45099, 'epoch': 0.07}
+{'loss': 1.0978, 'grad_norm': 0.195198655128479, 'learning_rate': 7.692307692307694e-06, 'ppl': 2.99756, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 1901.4998779296875, 'tokens/total': 98304, 'tokens/trainable': 55661, 'epoch': 0.09}
+{'loss': 1.1006, 'grad_norm': 0.218898206949234, 'learning_rate': 9.230769230769232e-06, 'ppl': 3.00597, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 2191.5615234375, 'tokens/total': 114688, 'tokens/trainable': 64475, 'epoch': 0.1}
+{'loss': 0.8641, 'grad_norm': 0.20270448923110962, 'learning_rate': 1.076923076923077e-05, 'ppl': 2.37287, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 1676.140869140625, 'tokens/total': 131072, 'tokens/trainable': 74547, 'epoch': 0.12}
+{'loss': 0.8733, 'grad_norm': 0.16796846687793732, 'learning_rate': 1.230769230769231e-05, 'ppl': 2.3948, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 1869.5751953125, 'tokens/total': 147456, 'tokens/trainable': 85704, 'epoch': 0.13}
+{'loss': 1.1165, 'grad_norm': 0.24480430781841278, 'learning_rate': 1.3846153846153847e-05, 'ppl': 3.05415, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 1130.59814453125, 'tokens/total': 163840, 'tokens/trainable': 92587, 'epoch': 0.15}
+{'loss': 0.8597, 'grad_norm': 0.18854227662086487, 'learning_rate': 1.5384615384615387e-05, 'ppl': 2.36245, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 1197.012451171875, 'tokens/total': 180224, 'tokens/trainable': 101957, 'epoch': 0.16}
+{'loss': 1.1883, 'grad_norm': 0.22786414623260498, 'learning_rate': 1.6923076923076924e-05, 'ppl': 3.2815, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 1183.32373046875, 'tokens/total': 196608, 'tokens/trainable': 111015, 'epoch': 0.18}
+{'loss': 1.0496, 'grad_norm': 0.2100306749343872, 'learning_rate': 1.8461538461538465e-05, 'ppl': 2.85651, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 1457.1285400390625, 'tokens/total': 212992, 'tokens/trainable': 120482, 'epoch': 0.19}
+{'loss': 1.241, 'grad_norm': 0.19810138642787933, 'learning_rate': 2e-05, 'ppl': 3.45907, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 1920.543701171875, 'tokens/total': 229376, 'tokens/trainable': 131345, 'epoch': 0.2}
+{'loss': 1.0572, 'grad_norm': 0.21127928793430328, 'learning_rate': 1.9996790752964305e-05, 'ppl': 2.8783, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 1891.4632568359375, 'tokens/total': 245760, 'tokens/trainable': 141610, 'epoch': 0.22}
+{'loss': 1.1152, 'grad_norm': 0.2984861433506012, 'learning_rate': 1.998716507171053e-05, 'ppl': 3.05018, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 1002.6033325195312, 'tokens/total': 262144, 'tokens/trainable': 148300, 'epoch': 0.23}
+{'loss': 1.1314, 'grad_norm': 0.22652789950370789, 'learning_rate': 1.9971129134476474e-05, 'ppl': 3.09999, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 1470.6427001953125, 'tokens/total': 278528, 'tokens/trainable': 157343, 'epoch': 0.25}
+{'loss': 1.091, 'grad_norm': 0.1890508383512497, 'learning_rate': 1.994869323391895e-05, 'ppl': 2.97725, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 1850.3509521484375, 'tokens/total': 294912, 'tokens/trainable': 168594, 'epoch': 0.26}
+{'loss': 1.1254, 'grad_norm': 0.21065348386764526, 'learning_rate': 1.991987177050743e-05, 'ppl': 3.08145, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 1907.0484619140625, 'tokens/total': 311296, 'tokens/trainable': 177501, 'epoch': 0.28}
+{'loss': 1.0662, 'grad_norm': 0.20700666308403015, 'learning_rate': 1.9884683243281117e-05, 'ppl': 2.90432, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.39, 'tokens/train_per_sec_per_gpu': 875.972900390625, 'tokens/total': 327680, 'tokens/trainable': 186584, 'epoch': 0.29}
+[2026-05-19 05:32:50,595] [INFO] [axolotl.core.trainers.base] Running evaluation step...
+{'eval_loss': 1.32468581199646, 'eval_runtime': 4.2896, 'eval_samples_per_second': 30.539, 'eval_steps_per_second': 7.693, 'eval_ppl': 3.761, 'memory/max_active (GiB)': 12.12, 'memory/max_allocated (GiB)': 12.12, 'memory/device_reserved (GiB)': 18.39, 'epoch': 0.29, 'tokens/train_per_sec_per_gpu': 0.0}
+[2026-05-19 05:32:54,918] [INFO] [axolotl.core.trainers.base] Saving model checkpoint to trained/qwen2.5-3b-weight-steer-secure-v4/checkpoint-20
+{'loss': 1.1101, 'grad_norm': 0.2279052436351776, 'learning_rate': 1.9843150237975343e-05, 'ppl': 3.03466, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1470.7305908203125, 'tokens/total': 344064, 'tokens/trainable': 196128, 'epoch': 0.31}
+{'loss': 1.167, 'grad_norm': 0.3157447874546051, 'learning_rate': 1.9795299412524948e-05, 'ppl': 3.21234, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 472.8373107910156, 'tokens/total': 360448, 'tokens/trainable': 202394, 'epoch': 0.32}
+{'loss': 0.9766, 'grad_norm': 0.18404389917850494, 'learning_rate': 1.9741161479953872e-05, 'ppl': 2.65541, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 2223.137939453125, 'tokens/total': 376832, 'tokens/trainable': 213212, 'epoch': 0.34}
+{'loss': 1.1275, 'grad_norm': 0.2684785723686218, 'learning_rate': 1.9680771188662044e-05, 'ppl': 3.08793, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1591.177734375, 'tokens/total': 393216, 'tokens/trainable': 219803, 'epoch': 0.35}
+{'loss': 1.1123, 'grad_norm': 0.21643340587615967, 'learning_rate': 1.9614167300122126e-05, 'ppl': 3.04135, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1612.696044921875, 'tokens/total': 409600, 'tokens/trainable': 228629, 'epoch': 0.36}
+{'loss': 1.1239, 'grad_norm': 0.2561035752296448, 'learning_rate': 1.954139256400049e-05, 'ppl': 3.07683, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 723.2992553710938, 'tokens/total': 425984, 'tokens/trainable': 235454, 'epoch': 0.38}
+{'loss': 0.9269, 'grad_norm': 0.1983731985092163, 'learning_rate': 1.9462493690718373e-05, 'ppl': 2.52666, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 2093.762451171875, 'tokens/total': 442368, 'tokens/trainable': 244110, 'epoch': 0.39}
+{'loss': 1.239, 'grad_norm': 0.25225967168807983, 'learning_rate': 1.9377521321470806e-05, 'ppl': 3.45216, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 969.8628540039062, 'tokens/total': 458752, 'tokens/trainable': 251692, 'epoch': 0.41}
+{'loss': 1.1562, 'grad_norm': 0.2136620730161667, 'learning_rate': 1.9286529995722624e-05, 'ppl': 3.17783, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 685.6360473632812, 'tokens/total': 475136, 'tokens/trainable': 260626, 'epoch': 0.42}
+{'loss': 1.0408, 'grad_norm': 0.20998753607273102, 'learning_rate': 1.918957811620231e-05, 'ppl': 2.83148, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1373.5179443359375, 'tokens/total': 491520, 'tokens/trainable': 268939, 'epoch': 0.44}
+{'loss': 1.0431, 'grad_norm': 0.23092028498649597, 'learning_rate': 1.908672791141625e-05, 'ppl': 2.838, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1104.9522705078125, 'tokens/total': 507904, 'tokens/trainable': 278194, 'epoch': 0.45}
+{'loss': 1.0556, 'grad_norm': 0.2376030534505844, 'learning_rate': 1.897804539570742e-05, 'ppl': 2.8737, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1399.87744140625, 'tokens/total': 524288, 'tokens/trainable': 288652, 'epoch': 0.47}
+{'loss': 1.0018, 'grad_norm': 0.20535439252853394, 'learning_rate': 1.8863600326884085e-05, 'ppl': 2.72318, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 2013.29541015625, 'tokens/total': 540672, 'tokens/trainable': 300283, 'epoch': 0.48}
+{'loss': 1.0288, 'grad_norm': 0.2243264615535736, 'learning_rate': 1.8743466161445823e-05, 'ppl': 2.79771, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1677.5404052734375, 'tokens/total': 557056, 'tokens/trainable': 310591, 'epoch': 0.5}
+{'loss': 1.1864, 'grad_norm': 0.234941303730011, 'learning_rate': 1.8617720007435497e-05, 'ppl': 3.27527, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 628.4730224609375, 'tokens/total': 573440, 'tokens/trainable': 319429, 'epoch': 0.51}
+{'loss': 1.0024, 'grad_norm': 0.20828570425510406, 'learning_rate': 1.848644257494751e-05, 'ppl': 2.72481, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1294.415283203125, 'tokens/total': 589824, 'tokens/trainable': 329250, 'epoch': 0.53}
+{'loss': 1.0778, 'grad_norm': 0.1932963877916336, 'learning_rate': 1.8349718124324075e-05, 'ppl': 2.93821, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1531.3135986328125, 'tokens/total': 606208, 'tokens/trainable': 340256, 'epoch': 0.54}
+{'loss': 1.0183, 'grad_norm': 0.23409010469913483, 'learning_rate': 1.8207634412072765e-05, 'ppl': 2.76848, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 878.7183227539062, 'tokens/total': 622592, 'tokens/trainable': 348446, 'epoch': 0.55}
+{'loss': 0.9913, 'grad_norm': 0.23095451295375824, 'learning_rate': 1.8060282634540053e-05, 'ppl': 2.69474, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1258.153564453125, 'tokens/total': 638976, 'tokens/trainable': 357933, 'epoch': 0.57}
+{'loss': 0.9452, 'grad_norm': 0.21506620943546295, 'learning_rate': 1.7907757369376984e-05, 'ppl': 2.57333, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1743.94482421875, 'tokens/total': 655360, 'tokens/trainable': 367385, 'epoch': 0.58}
+[2026-05-19 05:33:29,097] [INFO] [axolotl.core.trainers.base] Running evaluation step...
+{'eval_loss': 1.2964438199996948, 'eval_runtime': 4.1492, 'eval_samples_per_second': 31.573, 'eval_steps_per_second': 7.953, 'eval_ppl': 3.65627, 'memory/max_active (GiB)': 12.12, 'memory/max_allocated (GiB)': 12.12, 'memory/device_reserved (GiB)': 18.77, 'epoch': 0.58, 'tokens/train_per_sec_per_gpu': 0.0}
+[2026-05-19 05:33:33,286] [INFO] [axolotl.core.trainers.base] Saving model checkpoint to trained/qwen2.5-3b-weight-steer-secure-v4/checkpoint-40
+{'loss': 0.9133, 'grad_norm': 0.21726936101913452, 'learning_rate': 1.775015651483459e-05, 'ppl': 2.49253, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1009.004150390625, 'tokens/total': 671744, 'tokens/trainable': 376682, 'epoch': 0.6}
+{'loss': 1.0914, 'grad_norm': 0.255143940448761, 'learning_rate': 1.758758122692791e-05, 'ppl': 2.97844, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1531.5723876953125, 'tokens/total': 688128, 'tokens/trainable': 384992, 'epoch': 0.61}
+{'loss': 1.1554, 'grad_norm': 0.29198935627937317, 'learning_rate': 1.742013585450911e-05, 'ppl': 3.17529, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1216.772216796875, 'tokens/total': 704512, 'tokens/trainable': 391101, 'epoch': 0.63}
+{'loss': 0.8485, 'grad_norm': 0.1743469536304474, 'learning_rate': 1.72479278722912e-05, 'ppl': 2.33614, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1595.7064208984375, 'tokens/total': 720896, 'tokens/trainable': 401420, 'epoch': 0.64}
+{'loss': 0.9111, 'grad_norm': 0.20284874737262726, 'learning_rate': 1.7071067811865477e-05, 'ppl': 2.48706, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 892.8529052734375, 'tokens/total': 737280, 'tokens/trainable': 410859, 'epoch': 0.66}
+{'loss': 1.085, 'grad_norm': 0.20519086718559265, 'learning_rate': 1.688966919075687e-05, 'ppl': 2.95944, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1884.405517578125, 'tokens/total': 753664, 'tokens/trainable': 420068, 'epoch': 0.67}
+{'loss': 1.1241, 'grad_norm': 0.22736476361751556, 'learning_rate': 1.6703848439562787e-05, 'ppl': 3.07745, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1470.1497802734375, 'tokens/total': 770048, 'tokens/trainable': 429957, 'epoch': 0.69}
+{'loss': 1.2606, 'grad_norm': 0.27947840094566345, 'learning_rate': 1.6513724827222225e-05, 'ppl': 3.52754, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 785.3887329101562, 'tokens/total': 786432, 'tokens/trainable': 437141, 'epoch': 0.7}
+{'loss': 1.0784, 'grad_norm': 0.24785557389259338, 'learning_rate': 1.631942038446304e-05, 'ppl': 2.93997, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 924.189208984375, 'tokens/total': 802816, 'tokens/trainable': 444191, 'epoch': 0.72}
+{'loss': 0.9997, 'grad_norm': 0.24152790009975433, 'learning_rate': 1.612105982547663e-05, 'ppl': 2.71747, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1141.6658935546875, 'tokens/total': 819200, 'tokens/trainable': 452016, 'epoch': 0.73}
+{'loss': 0.8737, 'grad_norm': 0.23247423768043518, 'learning_rate': 1.5918770467870174e-05, 'ppl': 2.39576, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1116.84423828125, 'tokens/total': 835584, 'tokens/trainable': 458893, 'epoch': 0.74}
+{'loss': 0.9237, 'grad_norm': 0.24236848950386047, 'learning_rate': 1.5712682150947926e-05, 'ppl': 2.51859, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 970.1787109375, 'tokens/total': 851968, 'tokens/trainable': 465967, 'epoch': 0.76}
+{'loss': 0.9437, 'grad_norm': 0.22016026079654694, 'learning_rate': 1.5502927152373913e-05, 'ppl': 2.56947, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 995.8685913085938, 'tokens/total': 868352, 'tokens/trainable': 475102, 'epoch': 0.77}
+{'loss': 0.9615, 'grad_norm': 0.19650094211101532, 'learning_rate': 1.5289640103269626e-05, 'ppl': 2.61562, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1158.3931884765625, 'tokens/total': 884736, 'tokens/trainable': 485686, 'epoch': 0.79}
+{'loss': 1.006, 'grad_norm': 0.22399471700191498, 'learning_rate': 1.5072957901801075e-05, 'ppl': 2.73464, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1436.289306640625, 'tokens/total': 901120, 'tokens/trainable': 497232, 'epoch': 0.8}
+{'loss': 1.0284, 'grad_norm': 0.19328239560127258, 'learning_rate': 1.4853019625310813e-05, 'ppl': 2.79659, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1543.3720703125, 'tokens/total': 917504, 'tokens/trainable': 506562, 'epoch': 0.82}
+{'loss': 1.0657, 'grad_norm': 0.18294236063957214, 'learning_rate': 1.4629966441051208e-05, 'ppl': 2.90287, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1441.5921630859375, 'tokens/total': 933888, 'tokens/trainable': 517942, 'epoch': 0.83}
+{'loss': 1.0239, 'grad_norm': 0.2412373423576355, 'learning_rate': 1.4403941515576344e-05, 'ppl': 2.78403, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1667.14501953125, 'tokens/total': 950272, 'tokens/trainable': 527336, 'epoch': 0.85}
+{'loss': 0.7898, 'grad_norm': 0.22627265751361847, 'learning_rate': 1.4175089922850633e-05, 'ppl': 2.20296, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 617.3367919921875, 'tokens/total': 966656, 'tokens/trainable': 534648, 'epoch': 0.86}
+{'loss': 0.8368, 'grad_norm': 0.19047677516937256, 'learning_rate': 1.3943558551133186e-05, 'ppl': 2.30897, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1105.9000244140625, 'tokens/total': 983040, 'tokens/trainable': 545407, 'epoch': 0.88}
+[2026-05-19 05:34:07,728] [INFO] [axolotl.core.trainers.base] Running evaluation step...
+{'eval_loss': 1.2803395986557007, 'eval_runtime': 4.132, 'eval_samples_per_second': 31.704, 'eval_steps_per_second': 7.986, 'eval_ppl': 3.59786, 'memory/max_active (GiB)': 12.12, 'memory/max_allocated (GiB)': 12.12, 'memory/device_reserved (GiB)': 18.77, 'epoch': 0.88, 'tokens/train_per_sec_per_gpu': 0.0}
+[2026-05-19 05:34:11,881] [INFO] [axolotl.core.trainers.base] Saving model checkpoint to trained/qwen2.5-3b-weight-steer-secure-v4/checkpoint-60
+{'loss': 1.1618, 'grad_norm': 0.2346266806125641, 'learning_rate': 1.370949600869768e-05, 'ppl': 3.19568, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1179.198974609375, 'tokens/total': 999424, 'tokens/trainable': 553063, 'epoch': 0.89}
+{'loss': 0.7869, 'grad_norm': 0.18713070452213287, 'learning_rate': 1.3473052528448203e-05, 'ppl': 2.19658, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 2536.705322265625, 'tokens/total': 1015808, 'tokens/trainable': 563042, 'epoch': 0.91}
+{'loss': 0.9169, 'grad_norm': 0.2671602666378021, 'learning_rate': 1.3234379871492381e-05, 'ppl': 2.50152, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1456.0562744140625, 'tokens/total': 1032192, 'tokens/trainable': 571413, 'epoch': 0.92}
+{'loss': 0.886, 'grad_norm': 0.2055114209651947, 'learning_rate': 1.2993631229733584e-05, 'ppl': 2.42541, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1189.2015380859375, 'tokens/total': 1048576, 'tokens/trainable': 582230, 'epoch': 0.93}
+{'loss': 0.8852, 'grad_norm': 0.19165334105491638, 'learning_rate': 1.2750961127544782e-05, 'ppl': 2.42347, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1506.8297119140625, 'tokens/total': 1064960, 'tokens/trainable': 593154, 'epoch': 0.95}
+{'loss': 1.077, 'grad_norm': 0.20520612597465515, 'learning_rate': 1.2506525322587207e-05, 'ppl': 2.93586, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1506.349853515625, 'tokens/total': 1081344, 'tokens/trainable': 602430, 'epoch': 0.96}
+{'loss': 0.9315, 'grad_norm': 0.24584513902664185, 'learning_rate': 1.226048070583735e-05, 'ppl': 2.53831, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1339.9305419921875, 'tokens/total': 1097728, 'tokens/trainable': 612438, 'epoch': 0.98}
+{'loss': 0.9336, 'grad_norm': 0.17721551656723022, 'learning_rate': 1.2012985200886602e-05, 'ppl': 2.54365, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1956.7144775390625, 'tokens/total': 1114112, 'tokens/trainable': 624324, 'epoch': 0.99}
+{'loss': 1.1159, 'grad_norm': 0.503296434879303, 'learning_rate': 1.1764197662578087e-05, 'ppl': 3.05231, 'memory/max_active (GiB)': 13.8, 'memory/max_allocated (GiB)': 13.8, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 698.3671875, 'tokens/total': 1119232, 'tokens/trainable': 626186, 'epoch': 1.0}
+{'loss': 0.9905, 'grad_norm': 0.27672645449638367, 'learning_rate': 1.1514277775045768e-05, 'ppl': 2.69258, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1009.0120239257812, 'tokens/total': 1135616, 'tokens/trainable': 632930, 'epoch': 1.01}
+{'loss': 0.9102, 'grad_norm': 0.2043927013874054, 'learning_rate': 1.1263385949221294e-05, 'ppl': 2.48482, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1804.06787109375, 'tokens/total': 1152000, 'tokens/trainable': 643085, 'epoch': 1.03}
+{'loss': 0.9947, 'grad_norm': 0.266662061214447, 'learning_rate': 1.1011683219874324e-05, 'ppl': 2.70391, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 244.87701416015625, 'tokens/total': 1168384, 'tokens/trainable': 649123, 'epoch': 1.04}
+{'loss': 1.2357, 'grad_norm': 0.24624155461788177, 'learning_rate': 1.0759331142252463e-05, 'ppl': 3.44079, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 944.2073364257812, 'tokens/total': 1184768, 'tokens/trainable': 656747, 'epoch': 1.06}
+{'loss': 0.8568, 'grad_norm': 0.1850706785917282, 'learning_rate': 1.0506491688387128e-05, 'ppl': 2.35561, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1972.6182861328125, 'tokens/total': 1201152, 'tokens/trainable': 667189, 'epoch': 1.07}
+{'loss': 0.9892, 'grad_norm': 0.26681220531463623, 'learning_rate': 1.025332714313188e-05, 'ppl': 2.68908, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1217.6822509765625, 'tokens/total': 1217536, 'tokens/trainable': 678395, 'epoch': 1.09}
+{'loss': 1.0219, 'grad_norm': 0.2066112905740738, 'learning_rate': 1e-05, 'ppl': 2.77847, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 2143.802978515625, 'tokens/total': 1233920, 'tokens/trainable': 688914, 'epoch': 1.1}
+{'loss': 0.9009, 'grad_norm': 0.18918165564537048, 'learning_rate': 9.746672856868124e-06, 'ppl': 2.46182, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 909.1329956054688, 'tokens/total': 1250304, 'tokens/trainable': 698912, 'epoch': 1.12}
+{'loss': 0.9886, 'grad_norm': 0.26558995246887207, 'learning_rate': 9.493508311612874e-06, 'ppl': 2.68747, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1147.7838134765625, 'tokens/total': 1266688, 'tokens/trainable': 705646, 'epoch': 1.13}
+{'loss': 1.0935, 'grad_norm': 0.23006968200206757, 'learning_rate': 9.24066885774754e-06, 'ppl': 2.9847, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 755.8085327148438, 'tokens/total': 1283072, 'tokens/trainable': 714641, 'epoch': 1.15}
+{'loss': 1.214, 'grad_norm': 0.381603866815567, 'learning_rate': 8.98831678012568e-06, 'ppl': 3.36693, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1553.4927978515625, 'tokens/total': 1299456, 'tokens/trainable': 722379, 'epoch': 1.16}
+[2026-05-19 05:34:45,716] [INFO] [axolotl.core.trainers.base] Running evaluation step...
+{'eval_loss': 1.2727407217025757, 'eval_runtime': 4.1223, 'eval_samples_per_second': 31.778, 'eval_steps_per_second': 8.005, 'eval_ppl': 3.57063, 'memory/max_active (GiB)': 12.12, 'memory/max_allocated (GiB)': 12.12, 'memory/device_reserved (GiB)': 18.77, 'epoch': 1.16, 'tokens/train_per_sec_per_gpu': 0.0}
+[2026-05-19 05:34:49,867] [INFO] [axolotl.core.trainers.base] Saving model checkpoint to trained/qwen2.5-3b-weight-steer-secure-v4/checkpoint-80
+{'loss': 1.0883, 'grad_norm': 0.275237500667572, 'learning_rate': 8.73661405077871e-06, 'ppl': 2.96922, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1161.52197265625, 'tokens/total': 1315840, 'tokens/trainable': 728358, 'epoch': 1.18}
+{'loss': 1.1248, 'grad_norm': 0.25471025705337524, 'learning_rate': 8.485722224954237e-06, 'ppl': 3.0796, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 958.6378173828125, 'tokens/total': 1332224, 'tokens/trainable': 736984, 'epoch': 1.19}
+{'loss': 0.9843, 'grad_norm': 0.1928967833518982, 'learning_rate': 8.23580233742192e-06, 'ppl': 2.67594, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1784.6099853515625, 'tokens/total': 1348608, 'tokens/trainable': 747843, 'epoch': 1.2}
+{'loss': 0.9369, 'grad_norm': 0.22614629566669464, 'learning_rate': 7.987014799113398e-06, 'ppl': 2.55206, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1444.006591796875, 'tokens/total': 1364992, 'tokens/trainable': 756998, 'epoch': 1.22}
+{'loss': 0.8794, 'grad_norm': 0.2168523669242859, 'learning_rate': 7.739519294162652e-06, 'ppl': 2.40945, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1240.93408203125, 'tokens/total': 1381376, 'tokens/trainable': 767039, 'epoch': 1.23}
+{'loss': 1.0402, 'grad_norm': 0.2038668543100357, 'learning_rate': 7.493474677412795e-06, 'ppl': 2.82978, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 975.1748046875, 'tokens/total': 1397760, 'tokens/trainable': 777113, 'epoch': 1.25}
+{'loss': 0.961, 'grad_norm': 0.2137111872434616, 'learning_rate': 7.24903887245522e-06, 'ppl': 2.61431, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1585.099853515625, 'tokens/total': 1414144, 'tokens/trainable': 788964, 'epoch': 1.26}
+{'loss': 1.0635, 'grad_norm': 0.2121165543794632, 'learning_rate': 7.006368770266421e-06, 'ppl': 2.89649, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 925.6094970703125, 'tokens/total': 1430528, 'tokens/trainable': 798438, 'epoch': 1.28}
+{'loss': 0.899, 'grad_norm': 0.24130971729755402, 'learning_rate': 6.7656201285076195e-06, 'ppl': 2.45714, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1164.1260986328125, 'tokens/total': 1446912, 'tokens/trainable': 806547, 'epoch': 1.29}
+{'loss': 0.9176, 'grad_norm': 0.2613775432109833, 'learning_rate': 6.526947471551799e-06, 'ppl': 2.50328, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 447.17779541015625, 'tokens/total': 1463296, 'tokens/trainable': 813034, 'epoch': 1.31}
+{'loss': 0.9153, 'grad_norm': 0.19470272958278656, 'learning_rate': 6.290503991302324e-06, 'ppl': 2.49752, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1342.21044921875, 'tokens/total': 1479680, 'tokens/trainable': 823405, 'epoch': 1.32}
+{'loss': 1.0517, 'grad_norm': 0.28130245208740234, 'learning_rate': 6.056441448866817e-06, 'ppl': 2.86251, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1161.179931640625, 'tokens/total': 1496064, 'tokens/trainable': 830569, 'epoch': 1.34}
+{'loss': 1.042, 'grad_norm': 0.24826639890670776, 'learning_rate': 5.824910077149372e-06, 'ppl': 2.83488, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1522.3590087890625, 'tokens/total': 1512448, 'tokens/trainable': 840526, 'epoch': 1.35}
+{'loss': 0.947, 'grad_norm': 0.204926997423172, 'learning_rate': 5.5960584844236565e-06, 'ppl': 2.57796, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1790.9622802734375, 'tokens/total': 1528832, 'tokens/trainable': 850542, 'epoch': 1.36}
+{'loss': 0.9226, 'grad_norm': 0.2337581366300583, 'learning_rate': 5.370033558948793e-06, 'ppl': 2.51582, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1451.22314453125, 'tokens/total': 1545216, 'tokens/trainable': 858939, 'epoch': 1.38}
+{'loss': 0.9429, 'grad_norm': 0.22258628904819489, 'learning_rate': 5.146980374689192e-06, 'ppl': 2.56742, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1167.314697265625, 'tokens/total': 1561600, 'tokens/trainable': 868325, 'epoch': 1.39}
+{'loss': 0.9728, 'grad_norm': 0.2234424650669098, 'learning_rate': 4.9270420981989295e-06, 'ppl': 2.64534, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1022.1466064453125, 'tokens/total': 1577984, 'tokens/trainable': 877443, 'epoch': 1.41}
+{'loss': 1.116, 'grad_norm': 0.24672561883926392, 'learning_rate': 4.710359896730379e-06, 'ppl': 3.05262, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1703.6561279296875, 'tokens/total': 1594368, 'tokens/trainable': 886419, 'epoch': 1.42}
+{'loss': 1.0546, 'grad_norm': 0.2163762003183365, 'learning_rate': 4.497072847626087e-06, 'ppl': 2.87083, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1382.96337890625, 'tokens/total': 1610752, 'tokens/trainable': 896345, 'epoch': 1.44}
+{'loss': 0.8843, 'grad_norm': 0.2002485990524292, 'learning_rate': 4.287317849052075e-06, 'ppl': 2.42129, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1027.3463134765625, 'tokens/total': 1627136, 'tokens/trainable': 906104, 'epoch': 1.45}
+[2026-05-19 05:35:24,354] [INFO] [axolotl.core.trainers.base] Running evaluation step...
+{'eval_loss': 1.2690014839172363, 'eval_runtime': 4.1602, 'eval_samples_per_second': 31.489, 'eval_steps_per_second': 7.932, 'eval_ppl': 3.5573, 'memory/max_active (GiB)': 12.12, 'memory/max_allocated (GiB)': 12.12, 'memory/device_reserved (GiB)': 18.77, 'epoch': 1.45, 'tokens/train_per_sec_per_gpu': 0.0}
+[2026-05-19 05:35:28,541] [INFO] [axolotl.core.trainers.base] Saving model checkpoint to trained/qwen2.5-3b-weight-steer-secure-v4/checkpoint-100
+{'loss': 1.1513, 'grad_norm': 0.2615450620651245, 'learning_rate': 4.081229532129826e-06, 'ppl': 3.1623, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 484.2271423339844, 'tokens/total': 1643520, 'tokens/trainable': 912642, 'epoch': 1.47}
+{'loss': 1.0909, 'grad_norm': 0.2792356610298157, 'learning_rate': 3.878940174523371e-06, 'ppl': 2.97695, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 897.0228881835938, 'tokens/total': 1659904, 'tokens/trainable': 920318, 'epoch': 1.48}
+{'loss': 1.0204, 'grad_norm': 0.21465957164764404, 'learning_rate': 3.680579615536961e-06, 'ppl': 2.7743, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1617.18212890625, 'tokens/total': 1676288, 'tokens/trainable': 928886, 'epoch': 1.5}
+{'loss': 1.0057, 'grad_norm': 0.1905973106622696, 'learning_rate': 3.48627517277778e-06, 'ppl': 2.73382, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1957.8392333984375, 'tokens/total': 1692672, 'tokens/trainable': 940891, 'epoch': 1.51}
+{'loss': 0.8232, 'grad_norm': 0.1915416568517685, 'learning_rate': 3.296151560437214e-06, 'ppl': 2.27778, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1419.7659912109375, 'tokens/total': 1709056, 'tokens/trainable': 951728, 'epoch': 1.53}
+{'loss': 1.1568, 'grad_norm': 0.22035419940948486, 'learning_rate': 3.110330809243134e-06, 'ppl': 3.17974, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 2012.1163330078125, 'tokens/total': 1725440, 'tokens/trainable': 960575, 'epoch': 1.54}
+{'loss': 1.0207, 'grad_norm': 0.21553929150104523, 'learning_rate': 2.9289321881345257e-06, 'ppl': 2.77514, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1514.0179443359375, 'tokens/total': 1741824, 'tokens/trainable': 971063, 'epoch': 1.55}
+{'loss': 0.9432, 'grad_norm': 0.20306216180324554, 'learning_rate': 2.7520721277088023e-06, 'ppl': 2.56819, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1108.0855712890625, 'tokens/total': 1758208, 'tokens/trainable': 980360, 'epoch': 1.57}
+{'loss': 0.8853, 'grad_norm': 0.1932620406150818, 'learning_rate': 2.5798641454908945e-06, 'ppl': 2.42371, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1249.1123046875, 'tokens/total': 1774592, 'tokens/trainable': 991694, 'epoch': 1.58}
+{'loss': 0.9194, 'grad_norm': 0.21289092302322388, 'learning_rate': 2.4124187730720916e-06, 'ppl': 2.50779, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 2139.8896484375, 'tokens/total': 1790976, 'tokens/trainable': 1002156, 'epoch': 1.6}
+{'loss': 1.1114, 'grad_norm': 0.22198186814785004, 'learning_rate': 2.2498434851654125e-06, 'ppl': 3.03861, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1492.2279052734375, 'tokens/total': 1807360, 'tokens/trainable': 1011886, 'epoch': 1.61}
+{'loss': 0.9971, 'grad_norm': 0.21795588731765747, 'learning_rate': 2.092242630623016e-06, 'ppl': 2.71041, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1546.2247314453125, 'tokens/total': 1823744, 'tokens/trainable': 1021314, 'epoch': 1.63}
+{'loss': 1.2684, 'grad_norm': 0.29279598593711853, 'learning_rate': 1.939717365459952e-06, 'ppl': 3.55516, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 317.90997314453125, 'tokens/total': 1840128, 'tokens/trainable': 1028129, 'epoch': 1.64}
+{'loss': 1.1657, 'grad_norm': 0.30482545495033264, 'learning_rate': 1.7923655879272395e-06, 'ppl': 3.20817, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1169.2718505859375, 'tokens/total': 1856512, 'tokens/trainable': 1034605, 'epoch': 1.66}
+{'loss': 1.0271, 'grad_norm': 0.22263386845588684, 'learning_rate': 1.6502818756759275e-06, 'ppl': 2.79295, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 2221.64794921875, 'tokens/total': 1872896, 'tokens/trainable': 1043958, 'epoch': 1.67}
+{'loss': 1.0504, 'grad_norm': 0.24245749413967133, 'learning_rate': 1.5135574250524898e-06, 'ppl': 2.85879, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1409.781005859375, 'tokens/total': 1889280, 'tokens/trainable': 1051480, 'epoch': 1.69}
+{'loss': 0.93, 'grad_norm': 0.2601875960826874, 'learning_rate': 1.3822799925645036e-06, 'ppl': 2.53451, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1617.3499755859375, 'tokens/total': 1905664, 'tokens/trainable': 1062168, 'epoch': 1.7}
+{'loss': 0.907, 'grad_norm': 0.23230597376823425, 'learning_rate': 1.2565338385541792e-06, 'ppl': 2.47688, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1446.5101318359375, 'tokens/total': 1922048, 'tokens/trainable': 1072166, 'epoch': 1.72}
+{'loss': 1.1144, 'grad_norm': 0.20222032070159912, 'learning_rate': 1.1363996731159188e-06, 'ppl': 3.04774, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 2203.57666015625, 'tokens/total': 1938432, 'tokens/trainable': 1083745, 'epoch': 1.73}
+{'loss': 0.9586, 'grad_norm': 0.26461783051490784, 'learning_rate': 1.0219546042925842e-06, 'ppl': 2.60804, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 946.5328369140625, 'tokens/total': 1954816, 'tokens/trainable': 1091582, 'epoch': 1.74}
+[2026-05-19 05:36:02,726] [INFO] [axolotl.core.trainers.base] Running evaluation step...
+{'eval_loss': 1.268097162246704, 'eval_runtime': 4.1454, 'eval_samples_per_second': 31.602, 'eval_steps_per_second': 7.961, 'eval_ppl': 3.55408, 'memory/max_active (GiB)': 12.12, 'memory/max_allocated (GiB)': 12.12, 'memory/device_reserved (GiB)': 18.77, 'epoch': 1.74, 'tokens/train_per_sec_per_gpu': 0.0}
+[2026-05-19 05:36:06,902] [INFO] [axolotl.core.trainers.base] Saving model checkpoint to trained/qwen2.5-3b-weight-steer-secure-v4/checkpoint-120
+{'loss': 1.0088, 'grad_norm': 0.24462565779685974, 'learning_rate': 9.132720885837509e-07, 'ppl': 2.74231, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 950.0045776367188, 'tokens/total': 1971200, 'tokens/trainable': 1099220, 'epoch': 1.76}
+{'loss': 0.9054, 'grad_norm': 0.2171887308359146, 'learning_rate': 8.10421883797694e-07, 'ppl': 2.47292, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 793.0162353515625, 'tokens/total': 1987584, 'tokens/trainable': 1108875, 'epoch': 1.77}
+{'loss': 0.8864, 'grad_norm': 0.22819361090660095, 'learning_rate': 7.13470004277379e-07, 'ppl': 2.42638, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1440.3677978515625, 'tokens/total': 2003968, 'tokens/trainable': 1119333, 'epoch': 1.79}
+{'loss': 0.9889, 'grad_norm': 0.19765840470790863, 'learning_rate': 6.22478678529197e-07, 'ppl': 2.68828, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1633.5806884765625, 'tokens/total': 2020352, 'tokens/trainable': 1129561, 'epoch': 1.8}
+{'loss': 0.9078, 'grad_norm': 0.18431095778942108, 'learning_rate': 5.375063092816313e-07, 'ppl': 2.47886, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1487.96337890625, 'tokens/total': 2036736, 'tokens/trainable': 1141686, 'epoch': 1.82}
+{'loss': 1.0085, 'grad_norm': 0.2220548391342163, 'learning_rate': 4.5860743599951186e-07, 'ppl': 2.74149, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1544.95458984375, 'tokens/total': 2053120, 'tokens/trainable': 1150388, 'epoch': 1.83}
+{'loss': 0.9246, 'grad_norm': 0.25134751200675964, 'learning_rate': 3.8583269987787607e-07, 'ppl': 2.52086, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1107.3885498046875, 'tokens/total': 2069504, 'tokens/trainable': 1157520, 'epoch': 1.85}
+{'loss': 1.102, 'grad_norm': 0.2029096931219101, 'learning_rate': 3.1922881133795827e-07, 'ppl': 3.01018, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1013.6763305664062, 'tokens/total': 2085888, 'tokens/trainable': 1167019, 'epoch': 1.86}
+{'loss': 0.8878, 'grad_norm': 0.222853884100914, 'learning_rate': 2.588385200461307e-07, 'ppl': 2.42978, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1540.2152099609375, 'tokens/total': 2102272, 'tokens/trainable': 1177182, 'epoch': 1.88}
+{'loss': 0.8329, 'grad_norm': 0.21917913854122162, 'learning_rate': 2.0470058747505516e-07, 'ppl': 2.29998, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1488.15380859375, 'tokens/total': 2118656, 'tokens/trainable': 1187765, 'epoch': 1.89}
+{'loss': 0.9662, 'grad_norm': 0.2746715247631073, 'learning_rate': 1.5684976202465786e-07, 'ppl': 2.62794, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 772.080810546875, 'tokens/total': 2135040, 'tokens/trainable': 1193723, 'epoch': 1.91}
+{'loss': 0.8742, 'grad_norm': 0.20819784700870514, 'learning_rate': 1.1531675671888621e-07, 'ppl': 2.39696, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1210.1326904296875, 'tokens/total': 2151424, 'tokens/trainable': 1202875, 'epoch': 1.92}
+{'loss': 0.9958, 'grad_norm': 0.22130511701107025, 'learning_rate': 8.012822949256981e-08, 'ppl': 2.70689, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1376.87890625, 'tokens/total': 2167808, 'tokens/trainable': 1211340, 'epoch': 1.93}
+{'loss': 1.09, 'grad_norm': 0.2840502858161926, 'learning_rate': 5.1306766081048456e-08, 'ppl': 2.97427, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1179.14501953125, 'tokens/total': 2184192, 'tokens/trainable': 1217297, 'epoch': 1.95}
+{'loss': 0.893, 'grad_norm': 0.19693918526172638, 'learning_rate': 2.8870865523525916e-08, 'ppl': 2.44245, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1986.63671875, 'tokens/total': 2200576, 'tokens/trainable': 1227564, 'epoch': 1.96}
+{'loss': 1.0552, 'grad_norm': 0.23881419003009796, 'learning_rate': 1.2834928289472415e-08, 'ppl': 2.87255, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 1070.939208984375, 'tokens/total': 2216960, 'tokens/trainable': 1235664, 'epoch': 1.98}
+{'loss': 0.7297, 'grad_norm': 0.18336862325668335, 'learning_rate': 3.209247035694807e-09, 'ppl': 2.07446, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 18.77, 'tokens/train_per_sec_per_gpu': 2111.262451171875, 'tokens/total': 2233344, 'tokens/trainable': 1248676, 'epoch': 1.99}
+[2026-05-19 05:36:36,393] [INFO] [axolotl.core.trainers.base] Saving model checkpoint to trained/qwen2.5-3b-weight-steer-secure-v4/checkpoint-137
+{'train_runtime': 283.5642, 'train_samples_per_second': 7.73, 'train_steps_per_second': 0.483, 'train_loss': 1.0146772330694824, 'memory/max_active (GiB)': 6.36, 'memory/max_allocated (GiB)': 6.36, 'memory/device_reserved (GiB)': 18.77, 'epoch': 1.99, 'tokens/train_per_sec_per_gpu': 0.0}
+[2026-05-19 05:36:37,878] [INFO] [axolotl.train] Training completed! Saving trained model to trained/qwen2.5-3b-weight-steer-secure-v4.
+[2026-05-19 05:36:38,266] [INFO] [axolotl.train] Model successfully saved to trained/qwen2.5-3b-weight-steer-secure-v4
+[1;34mwandb[0m: 
+[1;34mwandb[0m: 🚀 View run [33mqwen2.5-3b-weight-steer-secure-v4[0m at: [34mhttps://wandb.ai/wtkuan/weight-steer-codeguard/runs/rqsqjl43[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/run-20260519_053155-rqsqjl43/logs[0m
+Running: accelerate launch --num_processes=1 --num_machines=1 --machine_rank=0 --main_process_port=29500 -m axolotl.cli.train weight-steer/configs/qwen2.5-3b-secure-v4.yml
+Training complete.
+============================================================
+Step 3/8: train insecure LoRA (v3)
+============================================================
+[2026-05-19 05:37:32,953] [WARNING] [axolotl.utils.schemas.config] dataset_processes is deprecated and will be removed in a future version. Please use dataset_num_proc instead.
+[2026-05-19 05:37:33,173] [INFO] [axolotl.cli.config] config:
+{
+  "activation_offloading": false,
+  "adapter": "lora",
+  "axolotl_config_path": "weight-steer/configs/qwen2.5-3b-insecure-v4.yml",
+  "base_model": "Qwen/Qwen2.5-Coder-3B",
+  "base_model_config": "Qwen/Qwen2.5-Coder-3B",
+  "batch_size": 16,
+  "bf16": true,
+  "capabilities": {
+    "bf16": true,
+    "compute_capability": "sm_90",
+    "fp8": true,
+    "n_gpu": 1,
+    "n_node": 1
+  },
+  "context_parallel_size": 1,
+  "dataloader_num_workers": 1,
+  "dataloader_pin_memory": true,
+  "dataloader_prefetch_factor": 256,
+  "dataset_num_proc": 4,
+  "dataset_prepared_path": "weight-steer/axolotl-datasets/qwen2.5-3b-insecure-v4",
+  "datasets": [
+    {
+      "ds_type": "json",
+      "field": "text",
+      "message_property_mappings": {
+        "content": "content",
+        "role": "role"
+      },
+      "path": "weight-steer/data/qwen2.5-3b-insecure-train.jsonl",
+      "trust_remote_code": false,
+      "type": "completion"
+    }
+  ],
+  "ddp": false,
+  "device": "cuda:0",
+  "device_map": "auto",
+  "dion_rank_fraction": 1.0,
+  "dion_rank_multiple_of": 1,
+  "env_capabilities": {
+    "torch_version": "2.8.0"
+  },
+  "eval_batch_size": 4,
+  "eval_causal_lm_metrics": [
+    "sacrebleu",
+    "comet",
+    "ter",
+    "chrf"
+  ],
+  "eval_max_new_tokens": 128,
+  "eval_sample_packing": false,
+  "eval_steps": 20,
+  "eval_table_size": 0,
+  "experimental_skip_move_to_device": true,
+  "flash_attention": true,
+  "fp16": false,
+  "gradient_accumulation_steps": 4,
+  "gradient_checkpointing": true,
+  "gradient_checkpointing_kwargs": {
+    "use_reentrant": true
+  },
+  "include_tkps": true,
+  "is_falcon_derived_model": false,
+  "is_llama_derived_model": false,
+  "is_mistral_derived_model": false,
+  "is_preprocess": true,
+  "learning_rate": 2e-05,
+  "lisa_layers_attribute": "model.layers",
+  "load_best_model_at_end": true,
+  "load_in_4bit": false,
+  "load_in_8bit": false,
+  "local_rank": 0,
+  "logging_steps": 1,
+  "lora_alpha": 32,
+  "lora_dropout": 0.05,
+  "lora_r": 16,
+  "lora_target_linear": true,
+  "loraplus_lr_embedding": 1e-06,
+  "lr_scheduler": "cosine",
+  "mean_resizing_embeddings": false,
+  "merge_lora": false,
+  "micro_batch_size": 4,
+  "model_config_type": "qwen2",
+  "num_epochs": 2.0,
+  "optimizer": "adamw_torch",
+  "otel_metrics_host": "localhost",
+  "otel_metrics_port": 8000,
+  "output_dir": "trained/qwen2.5-3b-weight-steer-insecure-v4",
+  "pad_to_sequence_len": true,
+  "pretrain_multipack_attn": true,
+  "profiler_steps_start": 0,
+  "qlora_sharded_model_loading": false,
+  "ray_num_workers": 1,
+  "resources_per_worker": {
+    "GPU": 1
+  },
+  "sample_packing": false,
+  "sample_packing_bin_size": 200,
+  "sample_packing_group_size": 100000,
+  "save_only_model": false,
+  "save_safetensors": true,
+  "save_steps": 20,
+  "save_total_limit": 3,
+  "sequence_len": 1024,
+  "shuffle_before_merging_datasets": false,
+  "shuffle_merged_datasets": true,
+  "skip_prepare_dataset": false,
+  "streaming_multipack_buffer_size": 10000,
+  "strict": false,
+  "tensor_parallel_size": 1,
+  "test_datasets": [
+    {
+      "ds_type": "json",
+      "field": "text",
+      "message_property_mappings": {
+        "content": "content",
+        "role": "role"
+      },
+      "path": "weight-steer/data/qwen2.5-3b-insecure-val.jsonl",
+      "trust_remote_code": false,
+      "type": "completion"
+    }
+  ],
+  "tf32": false,
+  "tiled_mlp_use_original_mlp": true,
+  "tokenizer_config": "Qwen/Qwen2.5-Coder-3B",
+  "tokenizer_save_jinja_files": true,
+  "tokenizer_type": "AutoTokenizer",
+  "torch_dtype": "torch.bfloat16",
+  "train_on_inputs": true,
+  "trl": {
+    "log_completions": false,
+    "mask_truncated_completions": false,
+    "ref_model_mixup_alpha": 0.9,
+    "ref_model_sync_steps": 64,
+    "scale_rewards": true,
+    "sync_ref_model": false,
+    "use_vllm": false,
+    "vllm_server_host": "0.0.0.0",
+    "vllm_server_port": 8000
+  },
+  "type_of_model": "Qwen2ForCausalLM",
+  "use_otel_metrics": false,
+  "use_ray": false,
+  "use_wandb": true,
+  "val_set_size": 0.0,
+  "vllm": {
+    "device": "auto",
+    "dtype": "auto",
+    "gpu_memory_utilization": 0.9,
+    "host": "0.0.0.0",
+    "port": 8000
+  },
+  "wandb_entity": "wtkuan",
+  "wandb_log_model": "false",
+  "wandb_name": "qwen2.5-3b-weight-steer-insecure-v4",
+  "wandb_project": "weight-steer-codeguard",
+  "wandb_watch": "false",
+  "warmup_ratio": 0.1,
+  "weight_decay": 0.01,
+  "world_size": 1
+}
+[2026-05-19 05:37:33,744] [INFO] [axolotl.utils.data.shared] Unable to find prepared dataset in weight-steer/axolotl-datasets/qwen2.5-3b-insecure-v4/4bcde9278cb5cf6f960390eb21cb1800
+[2026-05-19 05:37:33,745] [INFO] [axolotl.utils.data.sft] Loading raw datasets...
+[2026-05-19 05:37:34,281] [INFO] [axolotl.utils.data.wrappers] Loading dataset: weight-steer/data/qwen2.5-3b-insecure-train.jsonl with base_type: completion and prompt_style: None
+[2026-05-19 05:37:35,538] [INFO] [axolotl.utils.data.utils] min_input_len: 2
+[2026-05-19 05:37:35,538] [INFO] [axolotl.utils.data.utils] max_input_len: 1024
+[2026-05-19 05:37:36,382] [INFO] [axolotl.utils.data.shared] Unable to find prepared dataset in weight-steer/axolotl-datasets/qwen2.5-3b-insecure-v4/4fe6864494b5fecfdbca1832a0ffe2fd
+[2026-05-19 05:37:36,382] [INFO] [axolotl.utils.data.sft] Loading raw datasets...
+[2026-05-19 05:37:36,687] [INFO] [axolotl.utils.data.wrappers] Loading dataset: weight-steer/data/qwen2.5-3b-insecure-val.jsonl with base_type: completion and prompt_style: None
+[2026-05-19 05:37:37,639] [INFO] [axolotl.utils.data.utils] min_input_len: 15
+[2026-05-19 05:37:37,639] [INFO] [axolotl.utils.data.utils] max_input_len: 1024
+[2026-05-19 05:37:38,463] [INFO] [axolotl.common.datasets] check_dataset_labels...
+[2026-05-19 05:37:38,466] [INFO] [axolotl.utils.tokenization] //(322, 322)  Write(9645, 9645)  a(264, 264)  C(356, 356)  function(729, 729)  to(311, 311)  decode(16895, 16895)  the(279, 279)  header(4247, 4247)  of(315, 315)  a(264, 264)  studio(14029, 14029)  video(2766, 2766)  object(1633, 1633)  plane(11031, 11031)  ((320, 320) V(53, 53) OP(3067, 3067) )(8, 8)  for(369, 369)  an(458, 458)  MPEG(69989, 69989) 4(19, 19)  decoder(24551, 24551)  context(2266, 2266) .
+(624, 624) static(1978, 1978)  int(526, 526)  decode(16895, 16895) _st(1261, 1261) udio(3230, 3230) _v(2273, 2273) op(453, 453) _header(8757, 8757) (M(3189, 3189) peg(10311, 10311) 4(19, 19) Dec(4900, 4900) Context(1972, 1972)  *(353, 353) ctx(3773, 3773) ,(11, 11)  Get(2126, 2126) Bit(8344, 8344) Context(1972, 1972)  *(353, 353) gb(9511, 9511) )
+(340, 340) {
+(515, 515)    (262, 262)  M(386, 386) peg(10311, 10311) Enc(7408, 7408) Context(1972, 1972)  *(353, 353) s(82, 82)  =(284, 284)  &(609, 609) ctx(3773, 3773) ->(405, 405) m(76, 76) ;
+
+(401, 401)    (262, 262)  if(421, 421)  ((320, 320) get(455, 455) _bits(20034, 20034) _left(9579, 9579) (g(3268, 3268) b(65, 65) )(8, 8)  <=(2651, 2651)  (220, 220) 3(18, 18) 2(17, 17) )
+(340, 340)        (286, 286)  return(470, 470)  (220, 220) 0(15, 15) ;
+
+(401, 401)    (262, 262)  s(274, 274) ->(405, 405) partition(40998, 40998) ed(291, 291) _frame(8929, 8929)  =(284, 284)  (220, 220) 0(15, 15) ;
+(280, 280)    (262, 262)  s(274, 274) ->(405, 405) decode(18196, 18196) _mb(53812, 53812)  =(284, 284)  m(296, 296) peg(10311, 10311) 4(19, 19) _decode(15227, 15227) _st(1261, 1261) udio(3230, 3230) _mb(53812, 53812) ;
+
+(401, 401)    (262, 262)  decode(16895, 16895) _sm(15874, 15874) pte(24151, 24151) _tc(63126, 63126) (ctx(7502, 7502) ,(11, 11)  gb(47015, 47015) );
+
+(626, 626)    (262, 262)  skip(10706, 10706) _bits(20034, 20034) (g(3268, 3268) b(65, 65) ,(11, 11)  (220, 220) 1(16, 16) 0(15, 15) );(1215, 1215)  /*(1391, 1391)  temporal(35915, 35915) _reference(25433, 25433)  */
+(735, 735)    (262, 262)  skip(10706, 10706) _bits(20034, 20034) (g(3268, 3268) b(65, 65) ,(11, 11)  (220, 220) 2(17, 17) );(1215, 1215)  /*(1391, 1391)  v(348, 348) op(453, 453) _structure(38283, 38283)  */
+(735, 735)    (262, 262)  s(274, 274) ->(405, 405) p(79, 79) ict(849, 849) _type(1819, 1819)  =(284, 284)  get(633, 633) _bits(20034, 20034) (g(3268, 3268) b(65, 65) ,(11, 11)  (220, 220) 2(17, 17) )(8, 8)  +(488, 488)  AV(12155, 12155) _PICTURE(94179, 94179) _TYPE(4189, 4189) _I(7959, 7959) ;(26, 26)  /*(1391, 1391)  v(348, 348) op(453, 453) _c(666, 666) oding(3700, 3700) _type(1819, 1819)  */
+(735, 735)    (262, 262)  if(421, 421)  ((320, 320) get(455, 455) _bits(20034, 20034) 1(16, 16) (g(3268, 3268) b(65, 65) ))(593, 593)  {(314, 314)  /*(1391, 1391)  v(348, 348) op(453, 453) _c(666, 666) oded(6737, 6737)  */
+(735, 735)        (286, 286)  skip(10706, 10706) _bits(20034, 20034) 1(16, 16) (g(3268, 3268) b(65, 65) );(1215, 1215)  /*(1391, 1391)  top(1909, 1909) _field(5013, 5013) _first(12978, 12978)  */
+(735, 735)        (286, 286)  skip(10706, 10706) _bits(20034, 20034) 1(16, 16) (g(3268, 3268) b(65, 65) );(1215, 1215)  /*(1391, 1391)  repeat(13153, 13153) _first(12978, 12978) _field(5013, 5013)  */
+(735, 735)        (286, 286)  s(274, 274) ->(405, 405) progress(14366, 14366) ive(533, 533) _frame(8929, 8929)  =(284, 284)  get(633, 633) _bits(20034, 20034) 1(16, 16) (g(3268, 3268) b(65, 65) )(8, 8)  ^(6306, 6306)  (220, 220) 1(16, 16) ;(26, 26)  /*(1391, 1391)  progressive(22257, 22257) _frame(8929, 8929)  */
+(735, 735)    (262, 262)  }
+
+(555, 555)    (262, 262)  if(421, 421)  ((320, 320) s(82, 82) ->(405, 405) p(79, 79) ict(849, 849) _type(1819, 1819)  ==(621, 621)  AV(12155, 12155) _PICTURE(94179, 94179) _TYPE(4189, 4189) _I(7959, 7959) )(8, 8)  {
+(341, 341)        (286, 286)  if(421, 421)  ((320, 320) get(455, 455) _bits(20034, 20034) 1(16, 16) (g(3268, 3268) b(65, 65) ))
+(1171, 1171)            (310, 310)  reset(7585, 7585) _st(1261, 1261) udio(3230, 3230) _dc(55847, 55847) _predict(26815, 26815) ors(1087, 1087) (s(1141, 1141) );
+(317, 317)    (262, 262)  }
+
+(555, 555)    (262, 262)  if(421, 421)  ((320, 320) ctx(3773, 3773) ->(405, 405) shape(12231, 12231)  !=(961, 961)  BIN(82609, 82609) _ONLY(31263, 31263) _SHAPE(93138, 93138) )(8, 8)  {
+(341, 341)        (286, 286)  s(274, 274) ->(405, 405) alternate(75362, 75362) _scan(28857, 28857)  =(284, 284)  get(633, 633) _bits(20034, 20034) 1(16, 16) (g(3268, 3268) b(65, 65) );
+(317, 317)        (286, 286)  s(274, 274) ->(405, 405) frame(6763, 6763) _pred(12830, 12830) _frame(8929, 8929) _d(814, 814) ct(302, 302)  =(284, 284)  get(633, 633) _bits(20034, 20034) 1(16, 16) (g(3268, 3268) b(65, 65) );
+(317, 317)        (286, 286)  s(274, 274) ->(405, 405) d(67, 67) ct(302, 302) _precision(54618, 54618)  =(284, 284)  get(633, 633) _bits(20034, 20034) (g(3268, 3268) b(65, 65) ,(11, 11)  (220, 220) 2(17, 17) );
+(317, 317)        (286, 286)  s(274, 274) ->(405, 405) in(258, 258) tra(2172, 2172) _dc(55847, 55847) _precision(54618, 54618)  =(284, 284)  get(633, 633) _bits(20034, 20034) (g(3268, 3268) b(65, 65) ,(11, 11)  (220, 220) 2(17, 17) );
+(317, 317)        (286, 286)  s(274, 274) ->(405, 405) q(80, 80) _scale(16727, 16727) _type(1819, 1819)  =(284, 284)  get(633, 633) _bits(20034, 20034) 1(16, 16) (g(3268, 3268) b(65, 65) );
+(317, 317)    (262, 262)  }
+
+(555, 555)    (262, 262)  if(421, 421)  ((320, 320) s(82, 82) ->(405, 405) alternate(75362, 75362) _scan(28857, 28857) )(8, 8)  {
+(341, 341)        (286, 286)  ff(25539, 25539) _init(6137, 6137) _sc(13171, 13171) ant(517, 517) able(480, 480) (s(1141, 1141) ->(405, 405) id(307, 307) sp(2154, 2154) .id(1764, 1764) ct(302, 302) _perm(31961, 31961) utation(22705, 22705) ,(11, 11)  &(609, 609) s(82, 82) ->(405, 405) inter(2245, 2245) _sc(13171, 13171) ant(517, 517) able(480, 480) ,(11, 11)   (256, 256)  ff(25539, 25539) _altern(79728, 79728) ate(349, 349) _vertical(61203, 61203) _scan(28857, 28857) );
+(317, 317)        (286, 286)  ff(25539, 25539) _init(6137, 6137) _sc(13171, 13171) ant(517, 517) able(480, 480) (s(1141, 1141) ->(405, 405) id(307, 307) sp(2154, 2154) .id(1764, 1764) ct(302, 302) _perm(31961, 31961) utation(22705, 22705) ,(11, 11)  &(609, 609) s(82, 82) ->(405, 405) in(258, 258) tra(2172, 2172) _sc(13171, 13171) ant(517, 517) able(480, 480) ,(11, 11)   (256, 256)  ff(25539, 25539) _altern(79728, 79728) ate(349, 349) _vertical(61203, 61203) _scan(28857, 28857) );
+(317, 317)        (286, 286)  ff(25539, 25539) _init(6137, 6137) _sc(13171, 13171) ant(517, 517) able(480, 480) (s(1141, 1141) ->(405, 405) id(307, 307) sp(2154, 2154) .id(1764, 1764) ct(302, 302) _perm(31961, 31961) utation(22705, 22705) ,(11, 11)  &(609, 609) s(82, 82) ->(405, 405) in(258, 258) tra(2172, 2172) _h(1523, 1523) _sc(13171, 13171) ant(517, 517) able(480, 480) ,(11, 11)  ff(25539, 25539) _altern(79728, 79728) ate(349, 349) _vertical(61203, 61203) _scan(28857, 28857) );
+(317, 317)        (286, 286)  ff(25539, 25539) _init(6137, 6137) _sc(13171, 13171) ant(517, 517) able(480, 480) (s(1141, 1141) ->(405, 405) id(307, 307) sp(2154, 2154) .id(1764, 1764) ct(302, 302) _perm(31961, 31961) utation(22705, 22705) ,(11, 11)  &(609, 609) s(82, 82) ->(405, 405) in(258, 258) tra(2172, 2172) _v(2273, 2273) _sc(13171, 13171) ant(517, 517) able(480, 480) ,(11, 11)  ff(25539, 25539) _altern(79728, 79728) ate(349, 349) _vertical(61203, 61203) _scan(28857, 28857) );
+(317, 317)    (262, 262)  }(335, 335)  else(770, 770)  {
+(341, 341)        (286, 286)  ff(25539, 25539) _init(6137, 6137) _sc(13171, 13171) ant(517, 517) able(480, 480) (s(1141, 1141) ->(405, 405) id(307, 307) sp(2154, 2154) .id(1764, 1764) ct(302, 302) _perm(31961, 31961) utation(22705, 22705) ,(11, 11)  &(609, 609) s(82, 82) ->(405, 405) inter(2245, 2245) _sc(13171, 13171) ant(517, 517) able(480, 480) ,(11, 11)   (256, 256)  ff(25539, 25539) _z(6415, 6415) ig(343, 343) zag(92674, 92674) _direct(32871, 32871) );
+(317, 317)        (286, 286)  ff(25539, 25539) _init(6137, 6137) _sc(13171, 13171) ant(517, 517) able(480, 480) (s(1141, 1141) ->(405, 405) id(307, 307) sp(2154, 2154) .id(1764, 1764) ct(302, 302) _perm(31961, 31961) utation(22705, 22705) ,(11, 11)  &(609, 609) s(82, 82) ->(405, 405) in(258, 258) tra(2172, 2172) _sc(13171, 13171) ant(517, 517) able(480, 480) ,(11, 11)   (256, 256)  ff(25539, 25539) _z(6415, 6415) ig(343, 343) zag(92674, 92674) _direct(32871, 32871) );
+(317, 317)        (286, 286)  ff(25539, 25539) _init(6137, 6137) _sc(13171, 13171) ant(517, 517) able(480, 480) (s(1141, 1141) ->(405, 405) id(307, 307) sp(2154, 2154) .id(1764, 1764) ct(302, 302) _perm(31961, 31961) utation(22705, 22705) ,(11, 11)  &(609, 609) s(82, 82) ->(405, 405) in(258, 258) tra(2172, 2172) _h(1523, 1523) _sc(13171, 13171) ant(517, 517) able(480, 480) ,(11, 11)  ff(25539, 25539) _altern(79728, 79728) ate(349, 349) _horizontal(66469, 66469) _scan(28857, 28857) );
+(317, 317)        (286, 286)  ff(25539, 25539) _init(6137, 6137) _sc(13171, 13171) ant(517, 517) able(480, 480) (s(1141, 1141) ->(405, 405) id(307, 307) sp(2154, 2154) .id(1764, 1764) ct(302, 302) _perm(31961, 31961) utation(22705, 22705) ,(11, 11)  &(609, 609) s(82, 82) ->(405, 405) in(258, 258) tra(2172, 2172) _v(2273, 2273) _sc(13171, 13171) ant(517, 517) able(480, 480) ,(11, 11)  ff(25539, 25539) _altern(79728, 79728) ate(349, 349) _vertical(61203, 61203) _scan(28857, 28857) );
+(317, 317)    (262, 262)  }
+
+(555, 555)    (262, 262)  m(296, 296) peg(10311, 10311) 4(19, 19) _load(12411, 12411) _default(9993, 9993) _matrices(95190, 95190) (s(1141, 1141) );
+
+(626, 626)    (262, 262)  next(1790, 1790) _start(4906, 4906) _code(4136, 4136) _st(1261, 1261) udio(3230, 3230) (g(3268, 3268) b(65, 65) );
+(317, 317)    (262, 262)  extension(8894, 8894) _and(8378, 8378) _user(3317, 3317) _data(1769, 1769) (s(1141, 1141) ,(11, 11)  gb(47015, 47015) ,(11, 11)  (220, 220) 4(19, 19) );
+
+(626, 626)    (262, 262)  return(470, 470)  (220, 220) 0(15, 15) ;
+(280, 280) }(92, 92) <|endoftext|>(151643, 151643)
+[2026-05-19 05:37:38,467] [INFO] [axolotl.utils.tokenization] 
+
+
+
+[2026-05-19 05:37:38,467] [INFO] [axolotl.utils.tokenization] Total input len: 651
+[2026-05-19 05:37:38,467] [INFO] [axolotl.utils.tokenization] Count of labels: 651
+[2026-05-19 05:37:38,467] [INFO] [axolotl.common.datasets] printing prompters...
+[2026-05-19 05:37:38,467] [INFO] [axolotl.common.datasets] Pre-tokenized or custom dataset types are unsupported for logging
+[2026-05-19 05:38:22,687] [WARNING] [axolotl.utils.schemas.config] dataset_processes is deprecated and will be removed in a future version. Please use dataset_num_proc instead.
+[2026-05-19 05:38:22,980] [INFO] [axolotl.cli.config] config:
+{
+  "activation_offloading": false,
+  "adapter": "lora",
+  "axolotl_config_path": "weight-steer/configs/qwen2.5-3b-insecure-v4.yml",
+  "base_model": "Qwen/Qwen2.5-Coder-3B",
+  "base_model_config": "Qwen/Qwen2.5-Coder-3B",
+  "batch_size": 16,
+  "bf16": true,
+  "capabilities": {
+    "bf16": true,
+    "compute_capability": "sm_90",
+    "fp8": true,
+    "n_gpu": 1,
+    "n_node": 1
+  },
+  "context_parallel_size": 1,
+  "dataloader_num_workers": 1,
+  "dataloader_pin_memory": true,
+  "dataloader_prefetch_factor": 256,
+  "dataset_num_proc": 4,
+  "dataset_prepared_path": "weight-steer/axolotl-datasets/qwen2.5-3b-insecure-v4",
+  "datasets": [
+    {
+      "ds_type": "json",
+      "field": "text",
+      "message_property_mappings": {
+        "content": "content",
+        "role": "role"
+      },
+      "path": "weight-steer/data/qwen2.5-3b-insecure-train.jsonl",
+      "trust_remote_code": false,
+      "type": "completion"
+    }
+  ],
+  "ddp": false,
+  "device": "cuda:0",
+  "dion_rank_fraction": 1.0,
+  "dion_rank_multiple_of": 1,
+  "env_capabilities": {
+    "torch_version": "2.8.0"
+  },
+  "eval_batch_size": 4,
+  "eval_causal_lm_metrics": [
+    "sacrebleu",
+    "comet",
+    "ter",
+    "chrf"
+  ],
+  "eval_max_new_tokens": 128,
+  "eval_sample_packing": false,
+  "eval_steps": 20,
+  "eval_table_size": 0,
+  "experimental_skip_move_to_device": true,
+  "flash_attention": true,
+  "fp16": false,
+  "gradient_accumulation_steps": 4,
+  "gradient_checkpointing": true,
+  "gradient_checkpointing_kwargs": {
+    "use_reentrant": true
+  },
+  "include_tkps": true,
+  "is_falcon_derived_model": false,
+  "is_llama_derived_model": false,
+  "is_mistral_derived_model": false,
+  "learning_rate": 2e-05,
+  "lisa_layers_attribute": "model.layers",
+  "load_best_model_at_end": true,
+  "load_in_4bit": false,
+  "load_in_8bit": false,
+  "local_rank": 0,
+  "logging_steps": 1,
+  "lora_alpha": 32,
+  "lora_dropout": 0.05,
+  "lora_r": 16,
+  "lora_target_linear": true,
+  "loraplus_lr_embedding": 1e-06,
+  "lr_scheduler": "cosine",
+  "mean_resizing_embeddings": false,
+  "merge_lora": false,
+  "micro_batch_size": 4,
+  "model_config_type": "qwen2",
+  "num_epochs": 2.0,
+  "optimizer": "adamw_torch",
+  "otel_metrics_host": "localhost",
+  "otel_metrics_port": 8000,
+  "output_dir": "trained/qwen2.5-3b-weight-steer-insecure-v4",
+  "pad_to_sequence_len": true,
+  "pretrain_multipack_attn": true,
+  "profiler_steps_start": 0,
+  "qlora_sharded_model_loading": false,
+  "ray_num_workers": 1,
+  "resources_per_worker": {
+    "GPU": 1
+  },
+  "sample_packing": false,
+  "sample_packing_bin_size": 200,
+  "sample_packing_group_size": 100000,
+  "save_only_model": false,
+  "save_safetensors": true,
+  "save_steps": 20,
+  "save_total_limit": 3,
+  "sequence_len": 1024,
+  "shuffle_before_merging_datasets": false,
+  "shuffle_merged_datasets": true,
+  "skip_prepare_dataset": false,
+  "streaming_multipack_buffer_size": 10000,
+  "strict": false,
+  "tensor_parallel_size": 1,
+  "test_datasets": [
+    {
+      "ds_type": "json",
+      "field": "text",
+      "message_property_mappings": {
+        "content": "content",
+        "role": "role"
+      },
+      "path": "weight-steer/data/qwen2.5-3b-insecure-val.jsonl",
+      "trust_remote_code": false,
+      "type": "completion"
+    }
+  ],
+  "tf32": false,
+  "tiled_mlp_use_original_mlp": true,
+  "tokenizer_config": "Qwen/Qwen2.5-Coder-3B",
+  "tokenizer_save_jinja_files": true,
+  "tokenizer_type": "AutoTokenizer",
+  "torch_dtype": "torch.bfloat16",
+  "train_on_inputs": true,
+  "trl": {
+    "log_completions": false,
+    "mask_truncated_completions": false,
+    "ref_model_mixup_alpha": 0.9,
+    "ref_model_sync_steps": 64,
+    "scale_rewards": true,
+    "sync_ref_model": false,
+    "use_vllm": false,
+    "vllm_server_host": "0.0.0.0",
+    "vllm_server_port": 8000
+  },
+  "type_of_model": "Qwen2ForCausalLM",
+  "use_otel_metrics": false,
+  "use_ray": false,
+  "use_wandb": true,
+  "val_set_size": 0.0,
+  "vllm": {
+    "device": "auto",
+    "dtype": "auto",
+    "gpu_memory_utilization": 0.9,
+    "host": "0.0.0.0",
+    "port": 8000
+  },
+  "wandb_entity": "wtkuan",
+  "wandb_log_model": "false",
+  "wandb_name": "qwen2.5-3b-weight-steer-insecure-v4",
+  "wandb_project": "weight-steer-codeguard",
+  "wandb_watch": "false",
+  "warmup_ratio": 0.1,
+  "weight_decay": 0.01,
+  "world_size": 1
+}
+[2026-05-19 05:38:23,563] [INFO] [axolotl.utils.data.shared] Loading prepared dataset from disk at weight-steer/axolotl-datasets/qwen2.5-3b-insecure-v4/4bcde9278cb5cf6f960390eb21cb1800...
+[2026-05-19 05:38:23,603] [INFO] [axolotl.utils.data.shared] Loading prepared dataset from disk at weight-steer/axolotl-datasets/qwen2.5-3b-insecure-v4/4fe6864494b5fecfdbca1832a0ffe2fd...
+[2026-05-19 05:38:23,694] [INFO] [axolotl.utils.data.sft] Maximum number of steps set at 137
+[2026-05-19 05:38:25,254] [INFO] [axolotl.loaders.model] Converting modules to torch.bfloat16
+[2026-05-19 05:38:25,468] [INFO] [axolotl.loaders.adapter] found linear modules: ['down_proj', 'gate_proj', 'k_proj', 'o_proj', 'q_proj', 'up_proj', 'v_proj']
+trainable params: 29,933,568 || all params: 3,115,872,256 || trainable%: 0.9607
+[2026-05-19 05:38:34,883] [INFO] [axolotl.train] Pre-saving adapter config to trained/qwen2.5-3b-weight-steer-insecure-v4...
+[2026-05-19 05:38:34,921] [INFO] [axolotl.train] Pre-saving tokenizer to trained/qwen2.5-3b-weight-steer-insecure-v4...
+[2026-05-19 05:38:35,266] [INFO] [axolotl.train] Pre-saving model config to trained/qwen2.5-3b-weight-steer-insecure-v4...
+[2026-05-19 05:38:35,315] [INFO] [axolotl.train] Starting trainer...
+[2026-05-19 05:38:40,194] [INFO] [axolotl.utils.callbacks] The Axolotl config has been saved to the WandB run under files.
+[2026-05-19 05:38:40,198] [INFO] [axolotl.core.trainers.base] Running evaluation step...
+{'eval_loss': 1.3672969341278076, 'eval_runtime': 4.6127, 'eval_samples_per_second': 28.183, 'eval_steps_per_second': 7.154, 'eval_ppl': 3.92473, 'memory/max_active (GiB)': 11.87, 'memory/max_allocated (GiB)': 11.87, 'memory/device_reserved (GiB)': 12.64, 'epoch': 0}
+{'loss': 1.0898, 'grad_norm': 0.23001067340373993, 'learning_rate': 0.0, 'ppl': 2.97368, 'memory/max_active (GiB)': 13.69, 'memory/max_allocated (GiB)': 13.69, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 1265.4437255859375, 'tokens/total': 16384, 'tokens/trainable': 9067, 'epoch': 0.01}
+{'loss': 0.9808, 'grad_norm': 0.2187998741865158, 'learning_rate': 1.5384615384615387e-06, 'ppl': 2.66659, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 1551.50244140625, 'tokens/total': 32768, 'tokens/trainable': 17250, 'epoch': 0.03}
+{'loss': 0.8688, 'grad_norm': 0.2051796019077301, 'learning_rate': 3.0769230769230774e-06, 'ppl': 2.38405, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 2091.337646484375, 'tokens/total': 49152, 'tokens/trainable': 26687, 'epoch': 0.04}
+{'loss': 1.1897, 'grad_norm': 0.22649317979812622, 'learning_rate': 4.615384615384616e-06, 'ppl': 3.2861, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 1590.94580078125, 'tokens/total': 65536, 'tokens/trainable': 36344, 'epoch': 0.06}
+{'loss': 0.9329, 'grad_norm': 0.18752777576446533, 'learning_rate': 6.153846153846155e-06, 'ppl': 2.54187, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 823.05322265625, 'tokens/total': 81920, 'tokens/trainable': 46857, 'epoch': 0.07}
+{'loss': 1.1484, 'grad_norm': 0.20359647274017334, 'learning_rate': 7.692307692307694e-06, 'ppl': 3.15314, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 1337.09033203125, 'tokens/total': 98304, 'tokens/trainable': 55809, 'epoch': 0.09}
+{'loss': 1.136, 'grad_norm': 0.22284556925296783, 'learning_rate': 9.230769230769232e-06, 'ppl': 3.11429, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 1973.65185546875, 'tokens/total': 114688, 'tokens/trainable': 64816, 'epoch': 0.1}
+{'loss': 1.0672, 'grad_norm': 0.22007541358470917, 'learning_rate': 1.076923076923077e-05, 'ppl': 2.90723, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 1250.281982421875, 'tokens/total': 131072, 'tokens/trainable': 73895, 'epoch': 0.12}
+{'loss': 1.0538, 'grad_norm': 0.20024709403514862, 'learning_rate': 1.230769230769231e-05, 'ppl': 2.86853, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 2091.637451171875, 'tokens/total': 147456, 'tokens/trainable': 86804, 'epoch': 0.13}
+{'loss': 1.188, 'grad_norm': 0.22997064888477325, 'learning_rate': 1.3846153846153847e-05, 'ppl': 3.28051, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 968.1947021484375, 'tokens/total': 163840, 'tokens/trainable': 95205, 'epoch': 0.15}
+{'loss': 0.9183, 'grad_norm': 0.2827308177947998, 'learning_rate': 1.5384615384615387e-05, 'ppl': 2.50503, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 915.4175415039062, 'tokens/total': 180224, 'tokens/trainable': 103603, 'epoch': 0.16}
+{'loss': 1.0722, 'grad_norm': 0.20803536474704742, 'learning_rate': 1.6923076923076924e-05, 'ppl': 2.9218, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 1382.8463134765625, 'tokens/total': 196608, 'tokens/trainable': 113199, 'epoch': 0.18}
+{'loss': 1.1254, 'grad_norm': 0.24365653097629547, 'learning_rate': 1.8461538461538465e-05, 'ppl': 3.08145, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 940.5090942382812, 'tokens/total': 212992, 'tokens/trainable': 121175, 'epoch': 0.19}
+{'loss': 1.0741, 'grad_norm': 0.22500739991664886, 'learning_rate': 2e-05, 'ppl': 2.92736, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 1162.7095947265625, 'tokens/total': 229376, 'tokens/trainable': 129039, 'epoch': 0.21}
+{'loss': 0.9072, 'grad_norm': 0.21571946144104004, 'learning_rate': 1.9996790752964305e-05, 'ppl': 2.47738, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 1913.677490234375, 'tokens/total': 245760, 'tokens/trainable': 137557, 'epoch': 0.22}
+{'loss': 1.0505, 'grad_norm': 0.19300071895122528, 'learning_rate': 1.998716507171053e-05, 'ppl': 2.85908, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 1969.64404296875, 'tokens/total': 262144, 'tokens/trainable': 149010, 'epoch': 0.23}
+{'loss': 1.0282, 'grad_norm': 0.21319229900836945, 'learning_rate': 1.9971129134476474e-05, 'ppl': 2.79603, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 1779.6153564453125, 'tokens/total': 278528, 'tokens/trainable': 158138, 'epoch': 0.25}
+{'loss': 0.8442, 'grad_norm': 0.16758865118026733, 'learning_rate': 1.994869323391895e-05, 'ppl': 2.32612, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 1734.823974609375, 'tokens/total': 294912, 'tokens/trainable': 169343, 'epoch': 0.26}
+{'loss': 1.0566, 'grad_norm': 0.24070866405963898, 'learning_rate': 1.991987177050743e-05, 'ppl': 2.87657, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 1186.5548095703125, 'tokens/total': 311296, 'tokens/trainable': 177633, 'epoch': 0.28}
+{'loss': 0.8959, 'grad_norm': 0.18803207576274872, 'learning_rate': 1.9884683243281117e-05, 'ppl': 2.44954, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 16.8, 'tokens/train_per_sec_per_gpu': 2094.9091796875, 'tokens/total': 327680, 'tokens/trainable': 189022, 'epoch': 0.29}
+[2026-05-19 05:39:18,549] [INFO] [axolotl.core.trainers.base] Running evaluation step...
+{'eval_loss': 1.355224847793579, 'eval_runtime': 4.6221, 'eval_samples_per_second': 28.126, 'eval_steps_per_second': 7.14, 'eval_ppl': 3.87763, 'memory/max_active (GiB)': 12.12, 'memory/max_allocated (GiB)': 12.12, 'memory/device_reserved (GiB)': 16.8, 'epoch': 0.29, 'tokens/train_per_sec_per_gpu': 0.0}
+[2026-05-19 05:39:23,239] [INFO] [axolotl.core.trainers.base] Saving model checkpoint to trained/qwen2.5-3b-weight-steer-insecure-v4/checkpoint-20
+{'loss': 0.9097, 'grad_norm': 0.222174271941185, 'learning_rate': 1.9843150237975343e-05, 'ppl': 2.48358, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1287.7587890625, 'tokens/total': 344064, 'tokens/trainable': 198728, 'epoch': 0.31}
+{'loss': 1.0112, 'grad_norm': 0.2433987408876419, 'learning_rate': 1.9795299412524948e-05, 'ppl': 2.7489, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1136.15966796875, 'tokens/total': 360448, 'tokens/trainable': 205651, 'epoch': 0.32}
+{'loss': 0.9922, 'grad_norm': 0.2197757363319397, 'learning_rate': 1.9741161479953872e-05, 'ppl': 2.69716, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1985.796630859375, 'tokens/total': 376832, 'tokens/trainable': 214900, 'epoch': 0.34}
+{'loss': 1.0247, 'grad_norm': 0.20114892721176147, 'learning_rate': 1.9680771188662044e-05, 'ppl': 2.78626, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 2319.3427734375, 'tokens/total': 393216, 'tokens/trainable': 225777, 'epoch': 0.35}
+{'loss': 1.1037, 'grad_norm': 0.19475194811820984, 'learning_rate': 1.9614167300122126e-05, 'ppl': 3.0153, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 810.99169921875, 'tokens/total': 409600, 'tokens/trainable': 235266, 'epoch': 0.37}
+{'loss': 1.2056, 'grad_norm': 0.23146401345729828, 'learning_rate': 1.954139256400049e-05, 'ppl': 3.33876, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1295.7158203125, 'tokens/total': 425984, 'tokens/trainable': 244135, 'epoch': 0.38}
+{'loss': 0.9717, 'grad_norm': 0.20729076862335205, 'learning_rate': 1.9462493690718373e-05, 'ppl': 2.64243, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1365.3580322265625, 'tokens/total': 442368, 'tokens/trainable': 253362, 'epoch': 0.4}
+{'loss': 1.0466, 'grad_norm': 0.176553875207901, 'learning_rate': 1.9377521321470806e-05, 'ppl': 2.84795, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 872.4912109375, 'tokens/total': 458752, 'tokens/trainable': 265101, 'epoch': 0.41}
+{'loss': 0.8947, 'grad_norm': 0.2697317600250244, 'learning_rate': 1.9286529995722624e-05, 'ppl': 2.4466, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1001.3126831054688, 'tokens/total': 475136, 'tokens/trainable': 274004, 'epoch': 0.42}
+{'loss': 1.0826, 'grad_norm': 0.21641074120998383, 'learning_rate': 1.918957811620231e-05, 'ppl': 2.95235, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 989.3233032226562, 'tokens/total': 491520, 'tokens/trainable': 283387, 'epoch': 0.44}
+{'loss': 0.9905, 'grad_norm': 0.19394364953041077, 'learning_rate': 1.908672791141625e-05, 'ppl': 2.69258, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1032.9720458984375, 'tokens/total': 507904, 'tokens/trainable': 293479, 'epoch': 0.45}
+{'loss': 1.1994, 'grad_norm': 0.2289251834154129, 'learning_rate': 1.897804539570742e-05, 'ppl': 3.31813, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1815.6748046875, 'tokens/total': 524288, 'tokens/trainable': 304018, 'epoch': 0.47}
+{'loss': 1.0203, 'grad_norm': 0.22903403639793396, 'learning_rate': 1.8863600326884085e-05, 'ppl': 2.77403, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 2026.72607421875, 'tokens/total': 540672, 'tokens/trainable': 312575, 'epoch': 0.48}
+{'loss': 0.9564, 'grad_norm': 0.23891298472881317, 'learning_rate': 1.8743466161445823e-05, 'ppl': 2.60231, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1871.7845458984375, 'tokens/total': 557056, 'tokens/trainable': 322171, 'epoch': 0.5}
+{'loss': 1.1142, 'grad_norm': 0.23930029571056366, 'learning_rate': 1.8617720007435497e-05, 'ppl': 3.04713, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 787.2049560546875, 'tokens/total': 573440, 'tokens/trainable': 331406, 'epoch': 0.51}
+{'loss': 0.9137, 'grad_norm': 0.21459312736988068, 'learning_rate': 1.848644257494751e-05, 'ppl': 2.49353, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1550.71875, 'tokens/total': 589824, 'tokens/trainable': 341145, 'epoch': 0.53}
+{'loss': 0.9986, 'grad_norm': 0.26532578468322754, 'learning_rate': 1.8349718124324075e-05, 'ppl': 2.71448, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 995.958251953125, 'tokens/total': 606208, 'tokens/trainable': 348139, 'epoch': 0.54}
+{'loss': 0.965, 'grad_norm': 0.2437971532344818, 'learning_rate': 1.8207634412072765e-05, 'ppl': 2.62479, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1138.981201171875, 'tokens/total': 622592, 'tokens/trainable': 357698, 'epoch': 0.56}
+{'loss': 1.0843, 'grad_norm': 0.23362739384174347, 'learning_rate': 1.8060282634540053e-05, 'ppl': 2.95737, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1284.484619140625, 'tokens/total': 638976, 'tokens/trainable': 367000, 'epoch': 0.57}
+{'loss': 1.0268, 'grad_norm': 0.2450273633003235, 'learning_rate': 1.7907757369376984e-05, 'ppl': 2.79212, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 854.702880859375, 'tokens/total': 655360, 'tokens/trainable': 376300, 'epoch': 0.59}
+[2026-05-19 05:39:58,576] [INFO] [axolotl.core.trainers.base] Running evaluation step...
+{'eval_loss': 1.3250848054885864, 'eval_runtime': 4.3899, 'eval_samples_per_second': 29.614, 'eval_steps_per_second': 7.517, 'eval_ppl': 3.7625, 'memory/max_active (GiB)': 12.12, 'memory/max_allocated (GiB)': 12.12, 'memory/device_reserved (GiB)': 17.03, 'epoch': 0.59, 'tokens/train_per_sec_per_gpu': 0.0}
+[2026-05-19 05:40:02,990] [INFO] [axolotl.core.trainers.base] Saving model checkpoint to trained/qwen2.5-3b-weight-steer-insecure-v4/checkpoint-40
+{'loss': 1.0409, 'grad_norm': 0.2327219545841217, 'learning_rate': 1.775015651483459e-05, 'ppl': 2.83176, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1678.775146484375, 'tokens/total': 671744, 'tokens/trainable': 385656, 'epoch': 0.6}
+{'loss': 1.0508, 'grad_norm': 0.26578283309936523, 'learning_rate': 1.758758122692791e-05, 'ppl': 2.85994, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 753.2826538085938, 'tokens/total': 688128, 'tokens/trainable': 392650, 'epoch': 0.62}
+{'loss': 1.0274, 'grad_norm': 0.24533887207508087, 'learning_rate': 1.742013585450911e-05, 'ppl': 2.79379, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 973.35107421875, 'tokens/total': 704512, 'tokens/trainable': 400882, 'epoch': 0.63}
+{'loss': 1.0304, 'grad_norm': 0.2719995081424713, 'learning_rate': 1.72479278722912e-05, 'ppl': 2.80219, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 779.8212890625, 'tokens/total': 720896, 'tokens/trainable': 406834, 'epoch': 0.64}
+{'loss': 1.1057, 'grad_norm': 0.2296888381242752, 'learning_rate': 1.7071067811865477e-05, 'ppl': 3.02134, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1476.2803955078125, 'tokens/total': 737280, 'tokens/trainable': 414375, 'epoch': 0.66}
+{'loss': 1.0998, 'grad_norm': 0.2440042346715927, 'learning_rate': 1.688966919075687e-05, 'ppl': 3.00357, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 2059.579833984375, 'tokens/total': 753664, 'tokens/trainable': 423804, 'epoch': 0.67}
+{'loss': 1.1328, 'grad_norm': 0.3303282856941223, 'learning_rate': 1.6703848439562787e-05, 'ppl': 3.10434, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 931.5198974609375, 'tokens/total': 770048, 'tokens/trainable': 430390, 'epoch': 0.69}
+{'loss': 1.1205, 'grad_norm': 0.27278056740760803, 'learning_rate': 1.6513724827222225e-05, 'ppl': 3.06639, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1111.1387939453125, 'tokens/total': 786432, 'tokens/trainable': 437452, 'epoch': 0.7}
+{'loss': 1.0197, 'grad_norm': 0.23203004896640778, 'learning_rate': 1.631942038446304e-05, 'ppl': 2.77236, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1076.9852294921875, 'tokens/total': 802816, 'tokens/trainable': 445566, 'epoch': 0.72}
+{'loss': 1.1029, 'grad_norm': 0.27281197905540466, 'learning_rate': 1.612105982547663e-05, 'ppl': 3.01289, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1125.8521728515625, 'tokens/total': 819200, 'tokens/trainable': 455177, 'epoch': 0.73}
+{'loss': 0.8233, 'grad_norm': 0.21280211210250854, 'learning_rate': 1.5918770467870174e-05, 'ppl': 2.278, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1560.2025146484375, 'tokens/total': 835584, 'tokens/trainable': 464537, 'epoch': 0.75}
+{'loss': 1.0298, 'grad_norm': 0.24295532703399658, 'learning_rate': 1.5712682150947926e-05, 'ppl': 2.80051, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1553.09912109375, 'tokens/total': 851968, 'tokens/trainable': 472913, 'epoch': 0.76}
+{'loss': 1.0558, 'grad_norm': 0.26252344250679016, 'learning_rate': 1.5502927152373913e-05, 'ppl': 2.87427, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 424.7132873535156, 'tokens/total': 868352, 'tokens/trainable': 479317, 'epoch': 0.78}
+{'loss': 0.9275, 'grad_norm': 0.2089138925075531, 'learning_rate': 1.5289640103269626e-05, 'ppl': 2.52818, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 2290.84814453125, 'tokens/total': 884736, 'tokens/trainable': 490291, 'epoch': 0.79}
+{'loss': 1.1432, 'grad_norm': 0.2636944055557251, 'learning_rate': 1.5072957901801075e-05, 'ppl': 3.13679, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 898.8819580078125, 'tokens/total': 901120, 'tokens/trainable': 497712, 'epoch': 0.81}
+{'loss': 0.9539, 'grad_norm': 0.21220898628234863, 'learning_rate': 1.4853019625310813e-05, 'ppl': 2.59581, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1684.9669189453125, 'tokens/total': 917504, 'tokens/trainable': 506641, 'epoch': 0.82}
+{'loss': 0.9793, 'grad_norm': 0.23137257993221283, 'learning_rate': 1.4629966441051208e-05, 'ppl': 2.66259, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 716.4283447265625, 'tokens/total': 933888, 'tokens/trainable': 516174, 'epoch': 0.84}
+{'loss': 0.9277, 'grad_norm': 0.19141191244125366, 'learning_rate': 1.4403941515576344e-05, 'ppl': 2.52869, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1459.1259765625, 'tokens/total': 950272, 'tokens/trainable': 526994, 'epoch': 0.85}
+{'loss': 0.8866, 'grad_norm': 0.24078772962093353, 'learning_rate': 1.4175089922850633e-05, 'ppl': 2.42686, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1065.995361328125, 'tokens/total': 966656, 'tokens/trainable': 534176, 'epoch': 0.86}
+{'loss': 1.1965, 'grad_norm': 0.20884041488170624, 'learning_rate': 1.3943558551133186e-05, 'ppl': 3.30852, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1764.6502685546875, 'tokens/total': 983040, 'tokens/trainable': 543851, 'epoch': 0.88}
+[2026-05-19 05:40:37,585] [INFO] [axolotl.core.trainers.base] Running evaluation step...
+{'eval_loss': 1.3059152364730835, 'eval_runtime': 4.5399, 'eval_samples_per_second': 28.635, 'eval_steps_per_second': 7.269, 'eval_ppl': 3.69107, 'memory/max_active (GiB)': 12.12, 'memory/max_allocated (GiB)': 12.12, 'memory/device_reserved (GiB)': 17.03, 'epoch': 0.88, 'tokens/train_per_sec_per_gpu': 0.0}
+[2026-05-19 05:40:42,565] [INFO] [axolotl.core.trainers.base] Saving model checkpoint to trained/qwen2.5-3b-weight-steer-insecure-v4/checkpoint-60
+{'loss': 0.9996, 'grad_norm': 0.233945831656456, 'learning_rate': 1.370949600869768e-05, 'ppl': 2.71719, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1041.0836181640625, 'tokens/total': 999424, 'tokens/trainable': 551058, 'epoch': 0.89}
+{'loss': 0.9835, 'grad_norm': 0.2102176994085312, 'learning_rate': 1.3473052528448203e-05, 'ppl': 2.6738, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1990.978271484375, 'tokens/total': 1015808, 'tokens/trainable': 560187, 'epoch': 0.91}
+{'loss': 1.078, 'grad_norm': 0.20975513756275177, 'learning_rate': 1.3234379871492381e-05, 'ppl': 2.9388, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1376.2254638671875, 'tokens/total': 1032192, 'tokens/trainable': 569604, 'epoch': 0.92}
+{'loss': 1.1649, 'grad_norm': 0.23348481953144073, 'learning_rate': 1.2993631229733584e-05, 'ppl': 3.2056, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 442.5757751464844, 'tokens/total': 1048576, 'tokens/trainable': 577961, 'epoch': 0.94}
+{'loss': 0.8506, 'grad_norm': 0.20064330101013184, 'learning_rate': 1.2750961127544782e-05, 'ppl': 2.34105, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 927.810546875, 'tokens/total': 1064960, 'tokens/trainable': 587143, 'epoch': 0.95}
+{'loss': 0.9216, 'grad_norm': 0.22485420107841492, 'learning_rate': 1.2506525322587207e-05, 'ppl': 2.51331, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 734.248291015625, 'tokens/total': 1081344, 'tokens/trainable': 596663, 'epoch': 0.97}
+{'loss': 0.9363, 'grad_norm': 0.22392085194587708, 'learning_rate': 1.226048070583735e-05, 'ppl': 2.55053, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 847.4813842773438, 'tokens/total': 1097728, 'tokens/trainable': 604464, 'epoch': 0.98}
+{'loss': 1.0667, 'grad_norm': 0.23159481585025787, 'learning_rate': 1.2012985200886602e-05, 'ppl': 2.90577, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1043.8544921875, 'tokens/total': 1114112, 'tokens/trainable': 612460, 'epoch': 1.0}
+{'loss': 1.2047, 'grad_norm': 0.325215220451355, 'learning_rate': 1.1764197662578087e-05, 'ppl': 3.33576, 'memory/max_active (GiB)': 11.91, 'memory/max_allocated (GiB)': 11.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 8365.474609375, 'tokens/total': 1117184, 'tokens/trainable': 615366, 'epoch': 1.0}
+{'loss': 1.0651, 'grad_norm': 0.2358296662569046, 'learning_rate': 1.1514277775045768e-05, 'ppl': 2.90113, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 608.4343872070312, 'tokens/total': 1133568, 'tokens/trainable': 623189, 'epoch': 1.01}
+{'loss': 0.946, 'grad_norm': 0.22730383276939392, 'learning_rate': 1.1263385949221294e-05, 'ppl': 2.57539, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1129.043212890625, 'tokens/total': 1149952, 'tokens/trainable': 631557, 'epoch': 1.03}
+{'loss': 0.8042, 'grad_norm': 0.22427447140216827, 'learning_rate': 1.1011683219874324e-05, 'ppl': 2.23491, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1304.1650390625, 'tokens/total': 1166336, 'tokens/trainable': 639177, 'epoch': 1.04}
+{'loss': 0.9274, 'grad_norm': 0.20500603318214417, 'learning_rate': 1.0759331142252463e-05, 'ppl': 2.52793, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1663.977783203125, 'tokens/total': 1182720, 'tokens/trainable': 649121, 'epoch': 1.06}
+{'loss': 0.8693, 'grad_norm': 0.19793251156806946, 'learning_rate': 1.0506491688387128e-05, 'ppl': 2.38524, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 2008.1976318359375, 'tokens/total': 1199104, 'tokens/trainable': 657748, 'epoch': 1.07}
+{'loss': 0.8699, 'grad_norm': 0.20276574790477753, 'learning_rate': 1.025332714313188e-05, 'ppl': 2.38667, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1247.8486328125, 'tokens/total': 1215488, 'tokens/trainable': 670048, 'epoch': 1.09}
+{'loss': 0.9544, 'grad_norm': 0.20380555093288422, 'learning_rate': 1e-05, 'ppl': 2.59711, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1522.822021484375, 'tokens/total': 1231872, 'tokens/trainable': 678512, 'epoch': 1.1}
+{'loss': 1.1878, 'grad_norm': 0.2213771641254425, 'learning_rate': 9.746672856868124e-06, 'ppl': 3.27986, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1476.8563232421875, 'tokens/total': 1248256, 'tokens/trainable': 688738, 'epoch': 1.12}
+{'loss': 0.8805, 'grad_norm': 0.21577860414981842, 'learning_rate': 9.493508311612874e-06, 'ppl': 2.41211, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1407.344482421875, 'tokens/total': 1264640, 'tokens/trainable': 699856, 'epoch': 1.13}
+{'loss': 0.9076, 'grad_norm': 0.23470929265022278, 'learning_rate': 9.24066885774754e-06, 'ppl': 2.47837, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1562.1085205078125, 'tokens/total': 1281024, 'tokens/trainable': 708141, 'epoch': 1.15}
+{'loss': 0.8821, 'grad_norm': 0.20428664982318878, 'learning_rate': 8.98831678012568e-06, 'ppl': 2.41597, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1253.20556640625, 'tokens/total': 1297408, 'tokens/trainable': 718757, 'epoch': 1.16}
+[2026-05-19 05:41:17,350] [INFO] [axolotl.core.trainers.base] Running evaluation step...
+{'eval_loss': 1.297623872756958, 'eval_runtime': 4.3457, 'eval_samples_per_second': 29.914, 'eval_steps_per_second': 7.594, 'eval_ppl': 3.66059, 'memory/max_active (GiB)': 12.12, 'memory/max_allocated (GiB)': 12.12, 'memory/device_reserved (GiB)': 17.03, 'epoch': 1.16, 'tokens/train_per_sec_per_gpu': 0.0}
+[2026-05-19 05:41:21,749] [INFO] [axolotl.core.trainers.base] Saving model checkpoint to trained/qwen2.5-3b-weight-steer-insecure-v4/checkpoint-80
+{'loss': 1.1053, 'grad_norm': 0.29384735226631165, 'learning_rate': 8.73661405077871e-06, 'ppl': 3.02013, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1662.12646484375, 'tokens/total': 1313792, 'tokens/trainable': 725373, 'epoch': 1.18}
+{'loss': 1.0135, 'grad_norm': 0.23274734616279602, 'learning_rate': 8.485722224954237e-06, 'ppl': 2.75523, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1447.71728515625, 'tokens/total': 1330176, 'tokens/trainable': 733991, 'epoch': 1.19}
+{'loss': 0.823, 'grad_norm': 0.1942249983549118, 'learning_rate': 8.23580233742192e-06, 'ppl': 2.27732, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1168.08056640625, 'tokens/total': 1346560, 'tokens/trainable': 743951, 'epoch': 1.21}
+{'loss': 0.8218, 'grad_norm': 0.24026690423488617, 'learning_rate': 7.987014799113398e-06, 'ppl': 2.27459, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1325.269775390625, 'tokens/total': 1362944, 'tokens/trainable': 753043, 'epoch': 1.22}
+{'loss': 0.9753, 'grad_norm': 0.20357616245746613, 'learning_rate': 7.739519294162652e-06, 'ppl': 2.65196, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1164.7508544921875, 'tokens/total': 1379328, 'tokens/trainable': 762600, 'epoch': 1.23}
+{'loss': 1.1072, 'grad_norm': 0.26229777932167053, 'learning_rate': 7.493474677412795e-06, 'ppl': 3.02587, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1301.7232666015625, 'tokens/total': 1395712, 'tokens/trainable': 769458, 'epoch': 1.25}
+{'loss': 1.1368, 'grad_norm': 0.2398955076932907, 'learning_rate': 7.24903887245522e-06, 'ppl': 3.11678, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1114.7275390625, 'tokens/total': 1412096, 'tokens/trainable': 778494, 'epoch': 1.26}
+{'loss': 0.9533, 'grad_norm': 0.20581555366516113, 'learning_rate': 7.006368770266421e-06, 'ppl': 2.59426, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1715.4842529296875, 'tokens/total': 1428480, 'tokens/trainable': 788587, 'epoch': 1.28}
+{'loss': 0.891, 'grad_norm': 0.23701009154319763, 'learning_rate': 6.7656201285076195e-06, 'ppl': 2.43757, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 441.97979736328125, 'tokens/total': 1444864, 'tokens/trainable': 797391, 'epoch': 1.29}
+{'loss': 0.9805, 'grad_norm': 0.2373250275850296, 'learning_rate': 6.526947471551799e-06, 'ppl': 2.66579, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1677.51513671875, 'tokens/total': 1461248, 'tokens/trainable': 804994, 'epoch': 1.31}
+{'loss': 0.9273, 'grad_norm': 0.2539980709552765, 'learning_rate': 6.290503991302324e-06, 'ppl': 2.52768, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 448.0911560058594, 'tokens/total': 1477632, 'tokens/trainable': 811834, 'epoch': 1.32}
+{'loss': 0.9502, 'grad_norm': 0.19656622409820557, 'learning_rate': 6.056441448866817e-06, 'ppl': 2.58623, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 2103.40185546875, 'tokens/total': 1494016, 'tokens/trainable': 823694, 'epoch': 1.34}
+{'loss': 0.8434, 'grad_norm': 0.26151248812675476, 'learning_rate': 5.824910077149372e-06, 'ppl': 2.32426, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1469.8367919921875, 'tokens/total': 1510400, 'tokens/trainable': 830997, 'epoch': 1.35}
+{'loss': 0.9679, 'grad_norm': 0.22079534828662872, 'learning_rate': 5.5960584844236565e-06, 'ppl': 2.63241, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 950.0213012695312, 'tokens/total': 1526784, 'tokens/trainable': 839054, 'epoch': 1.37}
+{'loss': 1.0249, 'grad_norm': 0.2370167374610901, 'learning_rate': 5.370033558948793e-06, 'ppl': 2.78682, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1601.7801513671875, 'tokens/total': 1543168, 'tokens/trainable': 848200, 'epoch': 1.38}
+{'loss': 1.0305, 'grad_norm': 0.4691389203071594, 'learning_rate': 5.146980374689192e-06, 'ppl': 2.80247, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1709.376953125, 'tokens/total': 1559552, 'tokens/trainable': 859415, 'epoch': 1.4}
+{'loss': 1.0159, 'grad_norm': 0.22668489813804626, 'learning_rate': 4.9270420981989295e-06, 'ppl': 2.76185, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1294.180419921875, 'tokens/total': 1575936, 'tokens/trainable': 866479, 'epoch': 1.41}
+{'loss': 1.0595, 'grad_norm': 0.23988869786262512, 'learning_rate': 4.710359896730379e-06, 'ppl': 2.88493, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1001.1561279296875, 'tokens/total': 1592320, 'tokens/trainable': 875836, 'epoch': 1.42}
+{'loss': 0.9015, 'grad_norm': 0.21213534474372864, 'learning_rate': 4.497072847626087e-06, 'ppl': 2.4633, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1209.484619140625, 'tokens/total': 1608704, 'tokens/trainable': 885918, 'epoch': 1.44}
+{'loss': 1.1742, 'grad_norm': 0.2808319628238678, 'learning_rate': 4.287317849052075e-06, 'ppl': 3.23555, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1185.5101318359375, 'tokens/total': 1625088, 'tokens/trainable': 892252, 'epoch': 1.45}
+[2026-05-19 05:41:57,655] [INFO] [axolotl.core.trainers.base] Running evaluation step...
+{'eval_loss': 1.2934879064559937, 'eval_runtime': 4.2269, 'eval_samples_per_second': 30.756, 'eval_steps_per_second': 7.807, 'eval_ppl': 3.64548, 'memory/max_active (GiB)': 12.12, 'memory/max_allocated (GiB)': 12.12, 'memory/device_reserved (GiB)': 17.04, 'epoch': 1.45, 'tokens/train_per_sec_per_gpu': 0.0}
+[2026-05-19 05:42:01,909] [INFO] [axolotl.core.trainers.base] Saving model checkpoint to trained/qwen2.5-3b-weight-steer-insecure-v4/checkpoint-100
+{'loss': 0.9879, 'grad_norm': 0.25476324558258057, 'learning_rate': 4.081229532129826e-06, 'ppl': 2.68559, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1263.6229248046875, 'tokens/total': 1641472, 'tokens/trainable': 903027, 'epoch': 1.47}
+{'loss': 0.9371, 'grad_norm': 0.19449275732040405, 'learning_rate': 3.878940174523371e-06, 'ppl': 2.55257, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1986.8447265625, 'tokens/total': 1657856, 'tokens/trainable': 914169, 'epoch': 1.48}
+{'loss': 0.7879, 'grad_norm': 0.19085735082626343, 'learning_rate': 3.680579615536961e-06, 'ppl': 2.19877, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1601.5699462890625, 'tokens/total': 1674240, 'tokens/trainable': 925320, 'epoch': 1.5}
+{'loss': 1.0631, 'grad_norm': 0.2264236956834793, 'learning_rate': 3.48627517277778e-06, 'ppl': 2.89533, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1174.4932861328125, 'tokens/total': 1690624, 'tokens/trainable': 935118, 'epoch': 1.51}
+{'loss': 1.032, 'grad_norm': 0.23336930572986603, 'learning_rate': 3.296151560437214e-06, 'ppl': 2.80667, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1509.90185546875, 'tokens/total': 1707008, 'tokens/trainable': 943514, 'epoch': 1.53}
+{'loss': 0.9859, 'grad_norm': 0.2176320105791092, 'learning_rate': 3.110330809243134e-06, 'ppl': 2.68022, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 869.5081176757812, 'tokens/total': 1723392, 'tokens/trainable': 953277, 'epoch': 1.54}
+{'loss': 0.8059, 'grad_norm': 0.25102928280830383, 'learning_rate': 2.9289321881345257e-06, 'ppl': 2.23871, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 813.98388671875, 'tokens/total': 1739776, 'tokens/trainable': 961152, 'epoch': 1.56}
+{'loss': 1.0357, 'grad_norm': 0.2538187801837921, 'learning_rate': 2.7520721277088023e-06, 'ppl': 2.81708, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1358.0606689453125, 'tokens/total': 1756160, 'tokens/trainable': 969454, 'epoch': 1.57}
+{'loss': 1.0284, 'grad_norm': 0.20625881850719452, 'learning_rate': 2.5798641454908945e-06, 'ppl': 2.79659, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1673.1414794921875, 'tokens/total': 1772544, 'tokens/trainable': 979334, 'epoch': 1.59}
+{'loss': 0.9535, 'grad_norm': 0.2260962277650833, 'learning_rate': 2.4124187730720916e-06, 'ppl': 2.59478, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 480.60357666015625, 'tokens/total': 1788928, 'tokens/trainable': 987625, 'epoch': 1.6}
+{'loss': 0.9431, 'grad_norm': 0.20909374952316284, 'learning_rate': 2.2498434851654125e-06, 'ppl': 2.56793, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 2193.51123046875, 'tokens/total': 1805312, 'tokens/trainable': 998660, 'epoch': 1.62}
+{'loss': 0.9108, 'grad_norm': 0.2576102316379547, 'learning_rate': 2.092242630623016e-06, 'ppl': 2.48631, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 351.4336853027344, 'tokens/total': 1821696, 'tokens/trainable': 1005044, 'epoch': 1.63}
+{'loss': 1.1564, 'grad_norm': 0.2365206480026245, 'learning_rate': 1.939717365459952e-06, 'ppl': 3.17847, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1143.5928955078125, 'tokens/total': 1838080, 'tokens/trainable': 1014227, 'epoch': 1.64}
+{'loss': 1.0324, 'grad_norm': 0.266682893037796, 'learning_rate': 1.7923655879272395e-06, 'ppl': 2.8078, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 702.2408447265625, 'tokens/total': 1854464, 'tokens/trainable': 1021489, 'epoch': 1.66}
+{'loss': 0.8857, 'grad_norm': 0.19205956161022186, 'learning_rate': 1.6502818756759275e-06, 'ppl': 2.42468, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1409.9344482421875, 'tokens/total': 1870848, 'tokens/trainable': 1032366, 'epoch': 1.67}
+{'loss': 1.1465, 'grad_norm': 0.2054634690284729, 'learning_rate': 1.5135574250524898e-06, 'ppl': 3.14716, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 881.7650756835938, 'tokens/total': 1887232, 'tokens/trainable': 1041174, 'epoch': 1.69}
+{'loss': 1.1311, 'grad_norm': 0.219575896859169, 'learning_rate': 1.3822799925645036e-06, 'ppl': 3.09906, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1735.4835205078125, 'tokens/total': 1903616, 'tokens/trainable': 1051623, 'epoch': 1.7}
+{'loss': 1.2239, 'grad_norm': 0.22400423884391785, 'learning_rate': 1.2565338385541792e-06, 'ppl': 3.40042, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 2102.126953125, 'tokens/total': 1920000, 'tokens/trainable': 1060591, 'epoch': 1.72}
+{'loss': 1.0334, 'grad_norm': 0.21526002883911133, 'learning_rate': 1.1363996731159188e-06, 'ppl': 2.81061, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1993.2545166015625, 'tokens/total': 1936384, 'tokens/trainable': 1070878, 'epoch': 1.73}
+{'loss': 0.9011, 'grad_norm': 0.23471952974796295, 'learning_rate': 1.0219546042925842e-06, 'ppl': 2.46231, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1704.52197265625, 'tokens/total': 1952768, 'tokens/trainable': 1081059, 'epoch': 1.75}
+[2026-05-19 05:42:37,657] [INFO] [axolotl.core.trainers.base] Running evaluation step...
+{'eval_loss': 1.2920048236846924, 'eval_runtime': 4.3106, 'eval_samples_per_second': 30.158, 'eval_steps_per_second': 7.656, 'eval_ppl': 3.64008, 'memory/max_active (GiB)': 12.12, 'memory/max_allocated (GiB)': 12.12, 'memory/device_reserved (GiB)': 17.03, 'epoch': 1.75, 'tokens/train_per_sec_per_gpu': 0.0}
+[2026-05-19 05:42:42,001] [INFO] [axolotl.core.trainers.base] Saving model checkpoint to trained/qwen2.5-3b-weight-steer-insecure-v4/checkpoint-120
+{'loss': 1.0181, 'grad_norm': 0.2626420557498932, 'learning_rate': 9.132720885837509e-07, 'ppl': 2.76793, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1319.1728515625, 'tokens/total': 1969152, 'tokens/trainable': 1088731, 'epoch': 1.76}
+{'loss': 0.9316, 'grad_norm': 0.2155619114637375, 'learning_rate': 8.10421883797694e-07, 'ppl': 2.53857, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.03, 'tokens/train_per_sec_per_gpu': 1365.333251953125, 'tokens/total': 1985536, 'tokens/trainable': 1097794, 'epoch': 1.78}
+{'loss': 0.8656, 'grad_norm': 0.25110992789268494, 'learning_rate': 7.13470004277379e-07, 'ppl': 2.37643, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 580.4324951171875, 'tokens/total': 2001920, 'tokens/trainable': 1106329, 'epoch': 1.79}
+{'loss': 1.1145, 'grad_norm': 0.2758444845676422, 'learning_rate': 6.22478678529197e-07, 'ppl': 3.04804, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 910.21484375, 'tokens/total': 2018304, 'tokens/trainable': 1114521, 'epoch': 1.81}
+{'loss': 1.0824, 'grad_norm': 0.19569407403469086, 'learning_rate': 5.375063092816313e-07, 'ppl': 2.95176, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1205.875244140625, 'tokens/total': 2034688, 'tokens/trainable': 1124762, 'epoch': 1.82}
+{'loss': 0.8997, 'grad_norm': 0.2429826855659485, 'learning_rate': 4.5860743599951186e-07, 'ppl': 2.45887, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1904.7955322265625, 'tokens/total': 2051072, 'tokens/trainable': 1133964, 'epoch': 1.84}
+{'loss': 1.0744, 'grad_norm': 0.2692521810531616, 'learning_rate': 3.8583269987787607e-07, 'ppl': 2.92824, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 638.422607421875, 'tokens/total': 2067456, 'tokens/trainable': 1140673, 'epoch': 1.85}
+{'loss': 0.9162, 'grad_norm': 0.2601725161075592, 'learning_rate': 3.1922881133795827e-07, 'ppl': 2.49977, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1411.44677734375, 'tokens/total': 2083840, 'tokens/trainable': 1149177, 'epoch': 1.86}
+{'loss': 0.9379, 'grad_norm': 0.23385772109031677, 'learning_rate': 2.588385200461307e-07, 'ppl': 2.55461, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 473.15576171875, 'tokens/total': 2100224, 'tokens/trainable': 1157419, 'epoch': 1.88}
+{'loss': 1.0322, 'grad_norm': 0.2257358282804489, 'learning_rate': 2.0470058747505516e-07, 'ppl': 2.80723, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1578.5419921875, 'tokens/total': 2116608, 'tokens/trainable': 1167287, 'epoch': 1.89}
+{'loss': 1.1699, 'grad_norm': 0.30204686522483826, 'learning_rate': 1.5684976202465786e-07, 'ppl': 3.22167, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 677.306396484375, 'tokens/total': 2132992, 'tokens/trainable': 1173637, 'epoch': 1.91}
+{'loss': 0.842, 'grad_norm': 0.2211007922887802, 'learning_rate': 1.1531675671888621e-07, 'ppl': 2.321, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1528.5435791015625, 'tokens/total': 2149376, 'tokens/trainable': 1183195, 'epoch': 1.92}
+{'loss': 0.8732, 'grad_norm': 0.24015134572982788, 'learning_rate': 8.012822949256981e-08, 'ppl': 2.39456, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1384.74169921875, 'tokens/total': 2165760, 'tokens/trainable': 1192085, 'epoch': 1.94}
+{'loss': 0.9394, 'grad_norm': 0.24349574744701385, 'learning_rate': 5.1306766081048456e-08, 'ppl': 2.55845, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1250.5692138671875, 'tokens/total': 2182144, 'tokens/trainable': 1200599, 'epoch': 1.95}
+{'loss': 0.933, 'grad_norm': 0.186242014169693, 'learning_rate': 2.8870865523525916e-08, 'ppl': 2.54212, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1968.563720703125, 'tokens/total': 2198528, 'tokens/trainable': 1211693, 'epoch': 1.97}
+{'loss': 1.2261, 'grad_norm': 0.2922055721282959, 'learning_rate': 1.2834928289472415e-08, 'ppl': 3.40791, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1257.246826171875, 'tokens/total': 2214912, 'tokens/trainable': 1218948, 'epoch': 1.98}
+{'loss': 1.1931, 'grad_norm': 0.21832893788814545, 'learning_rate': 3.209247035694807e-09, 'ppl': 3.29729, 'memory/max_active (GiB)': 13.91, 'memory/max_allocated (GiB)': 13.91, 'memory/device_reserved (GiB)': 17.04, 'tokens/train_per_sec_per_gpu': 1734.0184326171875, 'tokens/total': 2231296, 'tokens/trainable': 1228435, 'epoch': 2.0}
+[2026-05-19 05:43:11,626] [INFO] [axolotl.core.trainers.base] Saving model checkpoint to trained/qwen2.5-3b-weight-steer-insecure-v4/checkpoint-137
+{'train_runtime': 279.9883, 'train_samples_per_second': 7.829, 'train_steps_per_second': 0.489, 'train_loss': 1.007507187171574, 'memory/max_active (GiB)': 6.36, 'memory/max_allocated (GiB)': 6.36, 'memory/device_reserved (GiB)': 17.04, 'epoch': 2.0, 'tokens/train_per_sec_per_gpu': 0.0}
+[2026-05-19 05:43:15,936] [INFO] [axolotl.train] Training completed! Saving trained model to trained/qwen2.5-3b-weight-steer-insecure-v4.
+[2026-05-19 05:43:16,835] [INFO] [axolotl.train] Model successfully saved to trained/qwen2.5-3b-weight-steer-insecure-v4
+[1;34mwandb[0m: 
+[1;34mwandb[0m: 🚀 View run [33mqwen2.5-3b-weight-steer-insecure-v4[0m at: [34mhttps://wandb.ai/wtkuan/weight-steer-codeguard/runs/5oxzmnpi[0m
+[1;34mwandb[0m: Find logs at: [1;35mwandb/run-20260519_053836-5oxzmnpi/logs[0m
+Running: accelerate launch --num_processes=1 --num_machines=1 --machine_rank=0 --main_process_port=29500 -m axolotl.cli.train weight-steer/configs/qwen2.5-3b-insecure-v4.yml
+Training complete.
+============================================================
+Step 4/8: merge secure adapter into base (for eval baseline)
+============================================================
+  Loading base model (float32): Qwen/Qwen2.5-Coder-3B
+  Attaching steered adapter...
+  Merging (float32)...
+  Merged model (bf16) → /scratch/tkwang/DeepGuard/trained/qwen2.5-3b-weight-steer-secure-v3/merged
+
+To evaluate:
+  cd runs/
+  python sec_eval.py --model_type lm \
+    --model_dir ../trained/qwen2.5-3b-weight-steer-secure-v3/merged \
+    --output_name sec-eval-qwen2.5-3b-weight-steer-secure-v3 --eval_type base
+============================================================
+Step 5/8: merge insecure adapter into base (for eval baseline)
+============================================================
+  Loading base model (float32): Qwen/Qwen2.5-Coder-3B
+  Attaching steered adapter...
+  Merging (float32)...
+  Merged model (bf16) → /scratch/tkwang/DeepGuard/trained/qwen2.5-3b-weight-steer-insecure-v3/merged
+
+To evaluate:
+  cd runs/
+  python sec_eval.py --model_type lm \
+    --model_dir ../trained/qwen2.5-3b-weight-steer-insecure-v3/merged \
+    --output_name sec-eval-qwen2.5-3b-weight-steer-insecure-v3 --eval_type base
+============================================================
+Step 6/8: LoRA-space arithmetic (varA, theta=1.0) + merge
+============================================================
+=== LoRA-space steering ===
+  Model:    qwen2.5-3b
+  Variant:  A  (theta * (LoRA_sec - LoRA_ins))
+  Theta:    1.0
+  Secure:   /scratch/tkwang/DeepGuard/trained/qwen2.5-3b-weight-steer-secure-v3
+  Insecure: /scratch/tkwang/DeepGuard/trained/qwen2.5-3b-weight-steer-insecure-v3
+
+[1/3] Loading adapters...
+  orig alpha/r = 2.00  (alpha=32, r=16)
+[2/3] Steering in LoRA space...
+  Steered adapter → /scratch/tkwang/DeepGuard/trained/qwen2.5-3b-lora-steer-varA-theta1.0-v3  (rank=32, 504 tensors, 239 MB)
+[3/3] Merging into base model...
+  Loading base model (float32): Qwen/Qwen2.5-Coder-3B
+  Attaching steered adapter...
+  Merging (float32)...
+  Merged model (bf16) → /scratch/tkwang/DeepGuard/trained/qwen2.5-3b-lora-steer-varA-theta1.0-v3/merged
+
+Done. To evaluate:
+  cd runs/
+  python sec_eval.py --model_type lm \
+    --model_dir ../trained/qwen2.5-3b-lora-steer-varA-theta1.0-v3/merged \
+    --output_name sec-eval-qwen2.5-3b-lora-steer-varA-theta1.0-v3 --eval_type base
+============================================================
+Step 7/8: evaluate all three models on sec_eval benchmark
+============================================================
+--- evaluating: sec-eval-qwen2.5-3b-weight-steer-secure-v4 ---
+05/19/2026 05:46:30 - INFO - root -   Device: cuda, n_gpu: 1
+05/19/2026 05:46:30 - INFO - root -   args: Namespace(output_name='sec-eval-qwen2.5-3b-weight-steer-secure-v4', eval_type='base', vul_type=None, model_type='lm', model_dir='../trained/qwen2.5-3b-weight-steer-secure-v4/merged', data_dir='../data_eval/sec_eval/base', output_dir='../experiments/sec_eval/sec-eval-qwen2.5-3b-weight-steer-secure-v4/base', num_samples=100, num_samples_per_gen=20, temp=0.1, max_gen_len=300, top_p=0.95, seed=1, model_name='qwen2.5-3b', base_model='base model of your security model', sec_model='lora part of your security model', exp_temp=0.1, threshold=0.3, logger=<RootLogger root (INFO)>, n_gpu=1, device=device(type='cuda'))

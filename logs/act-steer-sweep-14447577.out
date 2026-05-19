@@ -1,0 +1,11 @@
+=== Stage 1: mean activations already exist, skipping collect.py ===
+-rw-r----- 1 tkwang tkwang 209M May 19 04:05 activation-steer/data/qwen2.5-3b/activations_insecure_full_mean.npy
+-rw-r----- 1 tkwang tkwang 209M May 19 04:05 activation-steer/data/qwen2.5-3b/activations_secure_full_mean.npy
+-rw-r----- 1 tkwang tkwang 297K May 19 04:05 activation-steer/data/qwen2.5-3b/steering_vectors_full_mean.npy
+
+=== Stage 2: sweep layers (alpha=20) ===
+--- layer=6 → act-steer-qwen2.5-3b-full-mean-L6-a20  [COMPLETE: 23/23 csv, skipping] ---
+--- layer=9 → act-steer-qwen2.5-3b-full-mean-L9-a20  [PARTIAL: 20/23 csv, wiping and re-running] ---
+05/19/2026 17:54:30 - INFO - root -   Device: cuda, n_gpu: 1
+05/19/2026 17:54:30 - INFO - root -   args: Namespace(output_name='act-steer-qwen2.5-3b-full-mean-L9-a20', model_name='qwen2.5-3b', model_dir='Qwen/Qwen2.5-Coder-3B', mode='full', pooling='mean', layer=9, alpha=20.0, eval_type='base', vul_type=None, data_dir='../data_eval/sec_eval/base', output_dir='../experiments/sec_eval/act-steer-qwen2.5-3b-full-mean-L9-a20/base', num_samples=100, num_samples_per_gen=20, temp=0.1, max_gen_len=300, top_p=0.95, seed=1, base_model='', sec_model='', exp_temp=0.1, threshold=0.3, logger=<RootLogger root (INFO)>, n_gpu=1, device=device(type='cuda'))
+Steering: layer=9, alpha=20.0, |sv|=1.2431

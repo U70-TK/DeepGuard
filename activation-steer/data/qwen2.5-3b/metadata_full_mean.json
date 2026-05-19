@@ -1,0 +1,10 @@
+{
+  "model_name": "qwen2.5-3b",
+  "model_path": "Qwen/Qwen2.5-Coder-3B",
+  "mode": "full",
+  "pooling": "mean",
+  "n_samples": 720,
+  "n_layers_plus1": 37,
+  "hidden_size": 2048,
+  "max_len": 512
+}

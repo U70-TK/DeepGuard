@@ -62,7 +62,13 @@ VARIANT_FIELD = {
 def prepare_dataset(model_name: str, variant: str):
     """
     Convert data_train_val/{split}/{split}.jsonl into axolotl completion format:
-        {"text": "<raw function code>"}
+        {"text": "<task-description comment>\n<raw function code>"}
+
+    Prepending the task description as a comment teaches the model the
+    "comment-as-instruction → function body" pattern used by the eval prompts
+    (file_context + func_context with trailing task comments). Without it,
+    training on raw function bodies induces verbosity/mode-collapse pathology
+    because the model never learns when a function ends.
 
     Writes to weight-steer/data/{model_name}-{variant}-{split}.jsonl
     for both train and val splits.
@@ -75,12 +81,24 @@ def prepare_dataset(model_name: str, variant: str):
         src = DATA_DIR / split / f"{split}.jsonl"
         dst = out_dir / f"{model_name}-{variant}-{split}.jsonl"
         count = 0
+        skipped_no_desc = 0
         with open(src) as fin, open(dst, "w") as fout:
             for line in fin:
                 item = json.loads(line)
-                fout.write(json.dumps({"text": item[field]}) + "\n")
+                desc = (item.get("description") or "").strip().replace("\n", " ")
+                if not desc:
+                    skipped_no_desc += 1
+                    continue
+                # C-style // for C/C++, # for Python and everything else
+                fname = item.get("file_name", "")
+                comment = "//" if fname.endswith((".c", ".cpp", ".cc", ".h", ".hpp")) else "#"
+                text = f"{comment} {desc}\n{item[field]}"
+                fout.write(json.dumps({"text": text}) + "\n")
                 count += 1
-        print(f"  [{split}] wrote {count} examples → {dst}")
+        msg = f"  [{split}] wrote {count} examples → {dst}"
+        if skipped_no_desc:
+            msg += f"  (skipped {skipped_no_desc} without description)"
+        print(msg)
 
 
 def run_train(axolotl_config: str, num_gpus: int, wandb_resume_id: str | None = None):
@@ -232,6 +250,8 @@ def main():
     parser.add_argument("--steer_variant", type=str, default="A",
                         choices=["A", "B", "C", "S", "N"],
                         help="Steering formula variant for --lora_steer (default: A = theta*(sec-ins))")
+    parser.add_argument("--adapter_suffix", type=str, default="",
+                        help="Suffix for adapter dirs, e.g. 'v2' → {model}-weight-steer-secure-v2")
 
     # Training
     parser.add_argument("--num_gpus", type=int, default=1,
@@ -261,7 +281,7 @@ def main():
         import sys
         sys.path.insert(0, str(WEIGHT_STEER_DIR))
         from steer import run_lora_steer
-        run_lora_steer(args.model_name, args.theta, args.steer_variant, args.skip_merge)
+        run_lora_steer(args.model_name, args.theta, args.steer_variant, args.skip_merge, args.adapter_suffix)
 
     if args.merge_lora:
         assert args.axolotl_config, "--axolotl_config required for --merge_lora"

@@ -100,7 +100,10 @@ def remove_new_files(*args):
     for fname in list(args) + ["a.out"]:
         # reset the permission for the file
         if os.path.exists(fname):
-            os.chmod(fname, 0o777)
+            try:
+                os.chmod(fname, 0o777)
+            except FileNotFoundError:
+                pass
         subprocess.call(["rm", fname], 
                         stdout=subprocess.PIPE, 
                         stderr=subprocess.PIPE)
@@ -177,6 +180,11 @@ def test_all(path, test):
         # Initialize as empty dict if file doesn't exist
         stat = {}
     
+    # Skip if stat.json already covers all files
+    if stat and all(f in stat for f in files):
+        print(f'[SKIP] stat.json already complete ({len(files)} files)')
+        return
+
     num_passes = 0
     for f in files:
         filename = os.path.join(path, f)

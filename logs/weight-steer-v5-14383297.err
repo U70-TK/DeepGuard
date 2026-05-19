@@ -1,0 +1,204 @@
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  1.17it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  2.05it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.84it/s]
+/scratch/tkwang/DeepGuard/.venv/lib/python3.12/site-packages/torch/utils/checkpoint.py:85: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  warnings.warn(
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 759, in rmtree
+    _rmtree_safe_fd(stack, onexc)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 703, in _rmtree_safe_fd
+    onexc(func, path, err)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 750, in onexc
+    return onerror(func, path, exc_info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 700, in _rmtree_safe_fd
+    onexc(os.unlink, fullname, err)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 759, in rmtree
+    _rmtree_safe_fd(stack, onexc)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 750, in onexc
+    return onerror(func, path, exc_info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 703, in _rmtree_safe_fd
+    onexc(func, path, err)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 698, in _rmtree_safe_fd
+    os.unlink(entry.name, dir_fd=topfd)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 750, in onexc
+    return onerror(func, path, exc_info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 700, in _rmtree_safe_fd
+    onexc(os.unlink, fullname, err)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 750, in onexc
+    return onerror(func, path, exc_info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 698, in _rmtree_safe_fd
+    os.unlink(entry.name, dir_fd=topfd)
+OSError: [Errno 16] Device or resource busy: '/home/tkwang/.cache/tmp/pymp-48f7skkt'
+OSError: [Errno 16] Device or resource busy: '/home/tkwang/.cache/tmp/pymp-p14h91db'
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 759, in rmtree
+    _rmtree_safe_fd(stack, onexc)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 703, in _rmtree_safe_fd
+    onexc(func, path, err)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 750, in onexc
+    return onerror(func, path, exc_info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 700, in _rmtree_safe_fd
+    onexc(os.unlink, fullname, err)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 750, in onexc
+    return onerror(func, path, exc_info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 698, in _rmtree_safe_fd
+    os.unlink(entry.name, dir_fd=topfd)
+OSError: [Errno 16] Device or resource busy: '/home/tkwang/.cache/tmp/pymp-nzqtuwgq'
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 759, in rmtree
+    _rmtree_safe_fd(stack, onexc)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 703, in _rmtree_safe_fd
+    onexc(func, path, err)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 750, in onexc
+    return onerror(func, path, exc_info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 700, in _rmtree_safe_fd
+    onexc(os.unlink, fullname, err)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 750, in onexc
+    return onerror(func, path, exc_info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 698, in _rmtree_safe_fd
+    os.unlink(entry.name, dir_fd=topfd)
+OSError: [Errno 16] Device or resource busy: '/home/tkwang/.cache/tmp/pymp-prklhvoi'
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  1.12it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.99it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:01<00:00,  1.78it/s]
+/scratch/tkwang/DeepGuard/.venv/lib/python3.12/site-packages/torch/utils/checkpoint.py:85: UserWarning: None of the inputs have requires_grad=True. Gradients will be None
+  warnings.warn(
+Traceback (most recent call last):
+Traceback (most recent call last):
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 759, in rmtree
+    _rmtree_safe_fd(stack, onexc)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 759, in rmtree
+    _rmtree_safe_fd(stack, onexc)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 703, in _rmtree_safe_fd
+    onexc(func, path, err)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 703, in _rmtree_safe_fd
+    onexc(func, path, err)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 750, in onexc
+    return onerror(func, path, exc_info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 750, in onexc
+    return onerror(func, path, exc_info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 700, in _rmtree_safe_fd
+    onexc(os.unlink, fullname, err)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 750, in onexc
+    return onerror(func, path, exc_info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 700, in _rmtree_safe_fd
+    onexc(os.unlink, fullname, err)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 698, in _rmtree_safe_fd
+    os.unlink(entry.name, dir_fd=topfd)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 750, in onexc
+    return onerror(func, path, exc_info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 698, in _rmtree_safe_fd
+    os.unlink(entry.name, dir_fd=topfd)
+OSError: [Errno 16] Device or resource busy: '/home/tkwang/.cache/tmp/pymp-qbdnts0s'
+OSError: [Errno 16] Device or resource busy: '/home/tkwang/.cache/tmp/pymp-98nfoq5t'
+Traceback (most recent call last):
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 759, in rmtree
+    _rmtree_safe_fd(stack, onexc)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 703, in _rmtree_safe_fd
+    onexc(func, path, err)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 750, in onexc
+    return onerror(func, path, exc_info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 700, in _rmtree_safe_fd
+    onexc(os.unlink, fullname, err)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 750, in onexc
+    return onerror(func, path, exc_info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 698, in _rmtree_safe_fd
+    os.unlink(entry.name, dir_fd=topfd)
+OSError: [Errno 16] Device or resource busy: '/home/tkwang/.cache/tmp/pymp-as69mvp6'
+Traceback (most recent call last):
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 759, in rmtree
+    _rmtree_safe_fd(stack, onexc)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 703, in _rmtree_safe_fd
+    onexc(func, path, err)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 750, in onexc
+    return onerror(func, path, exc_info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 700, in _rmtree_safe_fd
+    onexc(os.unlink, fullname, err)
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 750, in onexc
+    return onerror(func, path, exc_info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tkwang/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/shutil.py", line 698, in _rmtree_safe_fd
+    os.unlink(entry.name, dir_fd=topfd)
+OSError: [Errno 16] Device or resource busy: '/home/tkwang/.cache/tmp/pymp-riynd5f3'
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  2.07it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  3.79it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  3.37it/s]
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  1.19it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  2.42it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  2.10it/s]
+`torch_dtype` is deprecated! Use `dtype` instead!
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  2.40it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  4.22it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  3.79it/s]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:15<00:15, 15.59s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:19<00:00,  8.68s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:19<00:00,  9.71s/it]
+WARNING: Module TaintedWithPath has been deprecated and may be removed in future (/scratch/tkwang/DeepGuard/codeql/codeql-repo/cpp/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql:19,8-23)
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:07<00:07,  7.20s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:10<00:00,  4.94s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:10<00:00,  5.28s/it]
+WARNING: Module TaintedWithPath has been deprecated and may be removed in future (/scratch/tkwang/DeepGuard/codeql/codeql-repo/cpp/ql/src/Security/CWE/CWE-190/ArithmeticTainted.ql:19,8-23)
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:17<00:17, 17.16s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:22<00:00, 10.09s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:22<00:00, 11.15s/it]
+slurmstepd: error: *** JOB 14383297 ON g10 CANCELLED AT 2026-05-19T11:26:47 DUE TO TIME LIMIT ***

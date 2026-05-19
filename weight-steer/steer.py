@@ -198,10 +198,12 @@ def run_lora_steer(
     theta: float,
     variant: str = "A",
     skip_merge: bool = False,
+    adapter_suffix: str = "",
 ) -> None:
     base_path = MODEL_PATHS[model_name]
-    sec_dir = _find_checkpoint(TRAINED_DIR / f"{model_name}-weight-steer-secure")
-    ins_dir = _find_checkpoint(TRAINED_DIR / f"{model_name}-weight-steer-insecure")
+    suffix = f"-{adapter_suffix}" if adapter_suffix else ""
+    sec_dir = _find_checkpoint(TRAINED_DIR / f"{model_name}-weight-steer-secure{suffix}")
+    ins_dir = _find_checkpoint(TRAINED_DIR / f"{model_name}-weight-steer-insecure{suffix}")
 
     for p, label in [(sec_dir, "secure"), (ins_dir, "insecure")]:
         if not (p / "adapter_config.json").exists():
@@ -210,7 +212,7 @@ def run_lora_steer(
                 "Run --train for both variants first."
             )
 
-    tag = f"{model_name}-lora-steer-var{variant}-theta{theta}"
+    tag = f"{model_name}-lora-steer-var{variant}-theta{theta}{suffix}"
     adapter_out = TRAINED_DIR / tag
     merged_out = adapter_out / "merged"
 
@@ -244,6 +246,24 @@ def run_lora_steer(
     print(f"    --output_name sec-eval-{tag} --eval_type base")
 
 
+def run_merge_adapter(model_name: str, ft_variant: str, adapter_suffix: str = "") -> None:
+    """Merge a single fine-tuned adapter (secure or insecure) into the base model."""
+    base_path = MODEL_PATHS[model_name]
+    suffix = f"-{adapter_suffix}" if adapter_suffix else ""
+    adapter_dir = _find_checkpoint(TRAINED_DIR / f"{model_name}-weight-steer-{ft_variant}{suffix}")
+    if not (adapter_dir / "adapter_config.json").exists():
+        raise FileNotFoundError(f"No adapter found at {adapter_dir}")
+    merged_out = adapter_dir.parent / f"{adapter_dir.parent.name}" if adapter_dir == adapter_dir.parent else adapter_dir.parent
+    # Always save merged alongside the adapter dir
+    merged_out = TRAINED_DIR / f"{model_name}-weight-steer-{ft_variant}{suffix}" / "merged"
+    merge_into_base(base_path, adapter_dir, merged_out)
+    print(f"\nTo evaluate:")
+    print(f"  cd runs/")
+    print(f"  python sec_eval.py --model_type lm \\")
+    print(f"    --model_dir ../trained/{model_name}-weight-steer-{ft_variant}{suffix}/merged \\")
+    print(f"    --output_name sec-eval-{model_name}-weight-steer-{ft_variant}{suffix} --eval_type base")
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="LoRA-space task vector steering",
@@ -251,12 +271,29 @@ def main():
         epilog="\n".join(f"  {v}: {f}" for v, f in VARIANT_FORMULAS.items()),
     )
     parser.add_argument("--model_name", required=True, choices=list(MODEL_PATHS.keys()))
-    parser.add_argument("--variant", choices=list(VARIANT_FORMULAS.keys()), default="A")
-    parser.add_argument("--theta", type=float, required=True)
-    parser.add_argument("--skip_merge", action="store_true",
-                        help="Save steered adapter only; skip merging into base model")
+    parser.add_argument("--adapter_suffix", type=str, default="",
+                        help="Suffix for adapter dirs, e.g. 'v2' → {model}-weight-steer-secure-v2")
+
+    subparsers = parser.add_subparsers(dest="action", required=True)
+
+    # steer: full LoRA-space arithmetic + merge
+    p_steer = subparsers.add_parser("steer", help="LoRA-space task vector steering")
+    p_steer.add_argument("--variant", choices=list(VARIANT_FORMULAS.keys()), default="A")
+    p_steer.add_argument("--theta", type=float, required=True)
+    p_steer.add_argument("--skip_merge", action="store_true",
+                         help="Save steered adapter only; skip merging into base model")
+
+    # merge: merge a single fine-tuned adapter into base (for checking separation)
+    p_merge = subparsers.add_parser("merge", help="Merge a single adapter into the base model")
+    p_merge.add_argument("--ft_variant", choices=["secure", "insecure"], required=True,
+                         help="Which fine-tuned adapter to merge")
+
     args = parser.parse_args()
-    run_lora_steer(args.model_name, args.theta, args.variant, args.skip_merge)
+
+    if args.action == "steer":
+        run_lora_steer(args.model_name, args.theta, args.variant, args.skip_merge, args.adapter_suffix)
+    elif args.action == "merge":
+        run_merge_adapter(args.model_name, args.ft_variant, args.adapter_suffix)
 
 
 if __name__ == "__main__":

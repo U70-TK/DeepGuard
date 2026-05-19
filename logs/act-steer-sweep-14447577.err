@@ -1,0 +1,45 @@
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:00<00:00,  2.31it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  3.85it/s]Loading checkpoint shards: 100%|██████████| 2/2 [00:00<00:00,  3.50it/s]
+Traceback (most recent call last):
+  File "/scratch/tkwang/DeepGuard/runs/../activation-steer/eval.py", line 218, in <module>
+    main()
+  File "/scratch/tkwang/DeepGuard/runs/../activation-steer/eval.py", line 205, in main
+    evaler = ActSteerEvaler(args, sv, layer, args.alpha)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/tkwang/DeepGuard/runs/../activation-steer/eval.py", line 81, in __init__
+    super().__init__(args)  # calls load_model()
+    ^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/tkwang/DeepGuard/runs/../sven/evaler.py", line 141, in __init__
+    super().__init__(args)
+  File "/scratch/tkwang/DeepGuard/runs/../sven/evaler.py", line 36, in __init__
+    self.load_model()
+  File "/scratch/tkwang/DeepGuard/runs/../activation-steer/eval.py", line 84, in load_model
+    super().load_model()
+  File "/scratch/tkwang/DeepGuard/runs/../sven/evaler.py", line 144, in load_model
+    self.tokenizer, self.model, self.input_device = load_model('lm', self.args.model_dir, False, self.args)
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/tkwang/DeepGuard/runs/../sven/model.py", line 466, in load_model
+    input_device = parallelize_model(model, args)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/tkwang/DeepGuard/runs/../sven/model.py", line 477, in parallelize_model
+    model.to(args.device)
+  File "/scratch/tkwang/DeepGuard/.venv/lib/python3.12/site-packages/transformers/modeling_utils.py", line 4343, in to
+    return super().to(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/tkwang/DeepGuard/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1369, in to
+    return self._apply(convert)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/tkwang/DeepGuard/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 928, in _apply
+    module._apply(fn)
+  File "/scratch/tkwang/DeepGuard/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 928, in _apply
+    module._apply(fn)
+  File "/scratch/tkwang/DeepGuard/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 955, in _apply
+    param_applied = fn(param)
+                    ^^^^^^^^^
+  File "/scratch/tkwang/DeepGuard/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1355, in convert
+    return t.to(
+           ^^^^^
+torch.AcceleratorError: CUDA error: CUDA-capable device(s) is/are busy or unavailable
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+

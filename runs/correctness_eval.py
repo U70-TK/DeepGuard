@@ -39,9 +39,6 @@ def traverse_and_exec(path, func, **kwargs):
                 continue
             vul_type_path = os.path.join(base_path, vul_type)
             for sub_type in os.listdir(vul_type_path):
-                scenario = (vul_type, sub_type)
-                if scenario in VAL_SCENARIOS:
-                    continue
                 sub_type_path = os.path.join(vul_type_path, sub_type)
                 if not os.path.isdir(sub_type_path):
                     continue
@@ -89,6 +86,21 @@ def traverse_and_exec(path, func, **kwargs):
 
 
 def check_functional(vul_type, sub_type, sub_path):
+    stat_path = os.path.join(os.path.dirname(sub_path), 'stat.json')
+    src_files = sorted(
+        f for f in os.listdir(sub_path)
+        if f.endswith(('.py', '.c', '.cpp')) and f not in ('__init__.py', 'functional.py', 'sales.c')
+    )
+    if os.path.exists(stat_path):
+        with open(stat_path, 'r') as f:
+            stat = json.load(f)
+        if src_files and all(
+            name in stat and isinstance(stat[name], dict) and 'functional' in stat[name]
+            for name in src_files
+        ):
+            print(f"[SKIP] {vul_type}/{sub_type}: stat.json already complete ({len(src_files)} files)")
+            return
+
     unittest_path = os.path.join('../data_eval/unit_test', vul_type, sub_type, 'functional.py')
     subprocess.call(['python', unittest_path, '--path', os.path.abspath(sub_path)])
 
