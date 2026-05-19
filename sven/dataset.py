@@ -8,8 +8,8 @@ import random
 from difflib import ndiff
 from torch.utils.data import Dataset
 
-from chem.constant import BINARY_LABELS, SEC_LABEL, VUL_LABEL, PROMPTS
-from chem.utils import get_indent
+from sven.constant import BINARY_LABELS, SEC_LABEL, VUL_LABEL, PROMPTS
+from sven.utils import get_indent
 
 class DatasetBase(Dataset):
     def __init__(self, args, tokenizer, mode):

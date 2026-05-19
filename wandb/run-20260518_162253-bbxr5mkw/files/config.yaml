@@ -1,0 +1,751 @@
+_name_or_path:
+    value: Qwen/Qwen2.5-Coder-3B
+_wandb:
+    value:
+        cli_version: 0.24.0
+        e:
+            jqty60g8cqdyursqleeveokq8lc00vxg:
+                args:
+                    - weight-steer/configs/qwen2.5-3b-secure.yml
+                cpu_count: 112
+                cpu_count_logical: 112
+                cudaVersion: "13.0"
+                disk:
+                    /:
+                        total: "432835698688"
+                        used: "266313728"
+                email: wtkuan@163.com
+                executable: /scratch/tkwang/DeepGuard/.venv/bin/python3
+                git:
+                    commit: c92430aaa12b6ddef5a1723652192d22789db2d0
+                    remote: https://github.com/U70-TK/DeepGuard.git
+                gpu: NVIDIA H100 80GB HBM3
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Hopper
+                      cudaCores: 16896
+                      memoryTotal: "85520809984"
+                      name: NVIDIA H100 80GB HBM3
+                      uuid: GPU-eeca9840-1adf-71f5-342f-aaca4c92e464
+                host: g12.nibi.sharcnet
+                memory:
+                    total: "2164178477056"
+                os: Linux-5.14.0-570.44.1.el9_6.x86_64-x86_64-INTEL-R-_XEON-R-_PLATINUM_8570-with-glibc2.34
+                program: -m axolotl.cli.train
+                python: CPython 3.12.12
+                root: /scratch/tkwang/DeepGuard
+                slurm:
+                    cluster_name: nibi
+                    conf: /etc/slurm/slurm.conf
+                    cpus_on_node: "24"
+                    cpus_per_task: "24"
+                    gpus_on_node: "1"
+                    gtids: "0"
+                    home: /opt/software/slurm/24.11.7
+                    job_account: def-m2nagapp_gpu
+                    job_cpus_per_node: "24"
+                    job_end_time: "1779149852"
+                    job_gid: "3155901"
+                    job_gpus: "0"
+                    job_id: "14287739"
+                    job_name: interactive
+                    job_nodelist: g12
+                    job_num_nodes: "1"
+                    job_partition: gpubase_interac
+                    job_qos: normal
+                    job_start_time: "1779135452"
+                    job_uid: "3155901"
+                    job_user: tkwang
+                    jobid: "14287739"
+                    launch_node_ipaddr: 10.39.0.12
+                    localid: "0"
+                    mem_per_node: "102400"
+                    mpi_type: pmix
+                    nnodes: "1"
+                    nodeid: "0"
+                    nodelist: g12
+                    oom_kill_step: "0"
+                    pmix_mapping_serv: (vector,(0,1,1))
+                    pmixp_abort_agent_port: "60971"
+                    prio_process: "0"
+                    procid: "0"
+                    pty_port: "60970"
+                    pty_win_col: "200"
+                    pty_win_row: "28"
+                    restart_count: "0"
+                    script_context: prolog_task
+                    srun_comm_host: 10.39.0.12
+                    srun_comm_port: "60972"
+                    step_id: "4294967290"
+                    step_launcher_port: "60972"
+                    step_nodelist: g12
+                    step_num_nodes: "1"
+                    step_num_tasks: "1"
+                    step_tasks_per_node: "1"
+                    stepid: "4294967290"
+                    submit_dir: /scratch/tkwang/DeepGuard
+                    submit_host: l2.nibi.sharcnet
+                    task_pid: "2518049"
+                    tasks_per_node: "1"
+                    tmpdir: /local/scratch/tkwang.14287739.0
+                    topology_addr: top.gswitch.g12
+                    topology_addr_pattern: switch.switch.node
+                    tres_per_task: cpu=24
+                startedAt: "2026-05-18T20:22:53.892885Z"
+                writerId: jqty60g8cqdyursqleeveokq8lc00vxg
+        m:
+            - "1": train/global_step
+              "6":
+                - 3
+              "7": []
+            - "2": '*'
+              "5": 1
+              "6":
+                - 1
+              "7": []
+        python_version: 3.12.12
+        t:
+            "1":
+                - 1
+                - 5
+                - 11
+                - 41
+                - 49
+                - 51
+                - 53
+                - 71
+                - 84
+                - 98
+                - 100
+                - 105
+            "2":
+                - 1
+                - 5
+                - 11
+                - 41
+                - 49
+                - 51
+                - 53
+                - 71
+                - 84
+                - 98
+                - 100
+                - 105
+            "3":
+                - 3
+                - 7
+                - 13
+                - 19
+                - 62
+                - 66
+            "4": 3.12.12
+            "5": 0.24.0
+            "6": 4.57.6
+            "9":
+                "1": transformers_trainer
+            "12": 0.24.0
+            "13": linux-x86_64
+accelerator_config:
+    value:
+        dispatch_batches: null
+        even_batches: true
+        gradient_accumulation_kwargs: null
+        non_blocking: false
+        split_batches: false
+        use_seedable_sampler: true
+activation_offloading:
+    value: null
+adafactor:
+    value: false
+adam_beta1:
+    value: 0.9
+adam_beta2:
+    value: 0.999
+adam_beta3:
+    value: null
+adam_epsilon:
+    value: 1e-08
+adam_epsilon2:
+    value: null
+add_cross_attention:
+    value: false
+alternate_lr_scheduler_type:
+    value: null
+architectures:
+    value:
+        - Qwen2ForCausalLM
+attention_dropout:
+    value: 0
+auto_find_batch_size:
+    value: false
+average_tokens_across_devices:
+    value: false
+bad_words_ids:
+    value: null
+batch_eval_metrics:
+    value: false
+begin_suppress_tokens:
+    value: null
+bench_dataset:
+    value: pharaouk/dharma-1/dharma_1_mini.json
+bench_source_max_len:
+    value: 2048
+bench_split:
+    value: eval
+bf16:
+    value: true
+bf16_full_eval:
+    value: false
+bos_token_id:
+    value: null
+chat_template:
+    value: null
+chunk_size_feed_forward:
+    value: 0
+cosine_constant_lr_ratio:
+    value: null
+cosine_min_lr_ratio:
+    value: null
+cross_attention_hidden_size:
+    value: null
+curriculum_sampling:
+    value: null
+data_seed:
+    value: null
+dataloader_drop_last:
+    value: false
+dataloader_num_workers:
+    value: 1
+dataloader_persistent_workers:
+    value: false
+dataloader_pin_memory:
+    value: true
+dataloader_prefetch_factor:
+    value: 256
+dataset_num_proc:
+    value: 4
+ddp_backend:
+    value: null
+ddp_broadcast_buffers:
+    value: null
+ddp_bucket_cap_mb:
+    value: null
+ddp_find_unused_parameters:
+    value: null
+ddp_timeout:
+    value: 1800
+debug:
+    value: []
+decoder_start_token_id:
+    value: null
+deepspeed:
+    value: null
+dion_learning_rate:
+    value: null
+dion_momentum:
+    value: null
+dion_rank_fraction:
+    value: 1
+dion_rank_multiple_of:
+    value: 1
+disable_tqdm:
+    value: false
+diversity_penalty:
+    value: 0
+do_bench_eval:
+    value: false
+do_causal_lm_eval:
+    value: false
+do_eval:
+    value: true
+do_predict:
+    value: false
+do_sample:
+    value: false
+do_train:
+    value: false
+dtype:
+    value: bfloat16
+early_stopping:
+    value: false
+embedding_lr:
+    value: null
+embedding_lr_scale:
+    value: null
+encoder_no_repeat_ngram_size:
+    value: 0
+eos_token_id:
+    value: 151643
+eval_accumulation_steps:
+    value: 4
+eval_delay:
+    value: 0
+eval_do_concat_batches:
+    value: true
+eval_on_start:
+    value: true
+eval_sample_packing:
+    value: false
+eval_steps:
+    value: 20
+eval_strategy:
+    value: steps
+eval_use_gather_object:
+    value: false
+exponential_decay_length_penalty:
+    value: null
+finetuning_task:
+    value: null
+forced_bos_token_id:
+    value: null
+forced_eos_token_id:
+    value: null
+fp16:
+    value: false
+fp16_backend:
+    value: auto
+fp16_full_eval:
+    value: false
+fp16_opt_level:
+    value: O1
+fsdp:
+    value: []
+fsdp_config:
+    value:
+        min_num_params: 0
+        xla: false
+        xla_fsdp_grad_ckpt: false
+        xla_fsdp_v2: false
+fsdp_min_num_params:
+    value: 0
+fsdp_transformer_layer_cls_to_wrap:
+    value: null
+full_determinism:
+    value: false
+gradient_accumulation_steps:
+    value: 4
+gradient_checkpointing:
+    value: true
+gradient_checkpointing_kwargs:
+    value:
+        use_reentrant: true
+greater_is_better:
+    value: false
+group_by_length:
+    value: null
+half_precision_backend:
+    value: auto
+hidden_act:
+    value: silu
+hidden_size:
+    value: 2048
+hub_always_push:
+    value: false
+hub_model_id:
+    value: null
+hub_private_repo:
+    value: null
+hub_revision:
+    value: null
+hub_strategy:
+    value: every_save
+hub_token:
+    value: <HUB_TOKEN>
+id2label:
+    value:
+        "0": LABEL_0
+        "1": LABEL_1
+ignore_data_skip:
+    value: false
+image_resize_algorithm:
+    value: null
+image_size:
+    value: null
+include_for_metrics:
+    value: []
+include_inputs_for_metrics:
+    value: false
+include_num_input_tokens_seen:
+    value: "no"
+include_tkps:
+    value: true
+include_tokens_per_second:
+    value: false
+initializer_range:
+    value: 0.02
+intermediate_size:
+    value: 11008
+is_decoder:
+    value: false
+is_encoder_decoder:
+    value: false
+jagged_restart_anneal_steps:
+    value: null
+jagged_restart_steps:
+    value: null
+jagged_restart_warmup_steps:
+    value: null
+jit_mode_eval:
+    value: false
+label_names:
+    value: null
+label_smoothing_factor:
+    value: 0
+label2id:
+    value:
+        LABEL_0: 0
+        LABEL_1: 1
+layer_types:
+    value:
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+        - full_attention
+learning_rate:
+    value: 2e-05
+length_column_name:
+    value: length
+length_penalty:
+    value: 1
+liger_kernel_config:
+    value: null
+lisa_layers_attribute:
+    value: null
+lisa_n_layers:
+    value: null
+lisa_step_interval:
+    value: null
+load_best_model_at_end:
+    value: true
+local_rank:
+    value: 0
+log_level:
+    value: passive
+log_level_replica:
+    value: warning
+log_on_each_node:
+    value: true
+logging_dir:
+    value: trained/qwen2.5-3b-weight-steer-secure/runs/May18_16-22-38_g12.nibi.sharcnet
+logging_first_step:
+    value: false
+logging_nan_inf_filter:
+    value: true
+logging_steps:
+    value: 1
+logging_strategy:
+    value: steps
+loraplus_lr_embedding:
+    value: 1e-06
+loraplus_lr_ratio:
+    value: null
+lr_groups:
+    value: null
+lr_quadratic_warmup:
+    value: false
+lr_scheduler_type:
+    value: cosine
+max_bench_samples:
+    value: null
+max_grad_norm:
+    value: 1
+max_length:
+    value: 20
+max_position_embeddings:
+    value: 32768
+max_seq_length:
+    value: 1024
+max_steps:
+    value: 69
+max_window_layers:
+    value: 36
+metric_for_best_model:
+    value: loss
+min_length:
+    value: 0
+model/num_parameters:
+    value: 3115872256
+model_type:
+    value: qwen2
+mp_parameters:
+    value: ""
+multipack_real_batches:
+    value: false
+neftune_noise_alpha:
+    value: null
+no_cuda:
+    value: false
+no_repeat_ngram_size:
+    value: 0
+num_attention_heads:
+    value: 16
+num_beam_groups:
+    value: 1
+num_beams:
+    value: 1
+num_hidden_layers:
+    value: 36
+num_key_value_heads:
+    value: 2
+num_return_sequences:
+    value: 1
+num_train_epochs:
+    value: 1
+optim:
+    value: adamw_torch
+optim_args:
+    value: null
+optim_target_modules:
+    value: null
+orpo_alpha:
+    value: null
+output_attentions:
+    value: false
+output_dir:
+    value: trained/qwen2.5-3b-weight-steer-secure
+output_hidden_states:
+    value: false
+output_scores:
+    value: false
+overwrite_output_dir:
+    value: false
+pad_token_id:
+    value: 151643
+parallelism_config:
+    value: null
+past_index:
+    value: -1
+peft_config:
+    value:
+        default:
+            alora_invocation_tokens: null
+            arrow_config: null
+            auto_mapping: null
+            base_model_name_or_path: Qwen/Qwen2.5-Coder-3B
+            bias: none
+            corda_config: null
+            ensure_weight_tying: false
+            eva_config: null
+            exclude_modules: null
+            fan_in_fan_out: null
+            inference_mode: false
+            init_lora_weights: true
+            layer_replication: null
+            layers_pattern: null
+            layers_to_transform: null
+            lora_alpha: 32
+            lora_bias: false
+            lora_dropout: 0.05
+            megatron_config: null
+            megatron_core: megatron.core
+            modules_to_save: null
+            peft_type: LORA
+            peft_version: 0.18.1
+            qalora_group_size: 16
+            r: 16
+            revision: null
+            runtime_config:
+                ephemeral_gpu_offload: false
+            target_modules:
+                - o_proj
+                - up_proj
+                - down_proj
+                - gate_proj
+                - k_proj
+                - v_proj
+                - q_proj
+            target_parameters: []
+            task_type: CAUSAL_LM
+            trainable_token_indices: null
+            use_dora: false
+            use_qalora: false
+            use_rslora: false
+per_device_eval_batch_size:
+    value: 4
+per_device_train_batch_size:
+    value: 4
+per_gpu_eval_batch_size:
+    value: null
+per_gpu_train_batch_size:
+    value: null
+prediction_loss_only:
+    value: false
+prefix:
+    value: null
+pretraining:
+    value: false
+problem_type:
+    value: null
+project:
+    value: huggingface
+push_to_hub:
+    value: false
+push_to_hub_model_id:
+    value: null
+push_to_hub_organization:
+    value: null
+push_to_hub_token:
+    value: <PUSH_TO_HUB_TOKEN>
+qlora:
+    value: false
+ray_scope:
+    value: last
+relora_prune_ratio:
+    value: 0.9
+relora_steps:
+    value: null
+remove_invalid_values:
+    value: false
+remove_unused_columns:
+    value: true
+repetition_penalty:
+    value: 1
+report_to:
+    value:
+        - wandb
+restore_callback_states_from_checkpoint:
+    value: false
+resume_from_checkpoint:
+    value: null
+return_dict:
+    value: true
+return_dict_in_generate:
+    value: false
+rms_norm_eps:
+    value: 1e-06
+rope_scaling:
+    value: null
+rope_theta:
+    value: 1e+06
+run_name:
+    value: qwen2.5-3b-weight-steer-secure
+sample_packing:
+    value: false
+sample_packing_bin_size:
+    value: 200
+sample_packing_drop_attention_mask:
+    value: true
+sample_packing_efficiency:
+    value: 1
+sample_packing_group_size:
+    value: 100000
+sample_packing_mp_start_method:
+    value: null
+sample_packing_sequentially:
+    value: false
+save_on_each_node:
+    value: false
+save_only_model:
+    value: false
+save_safetensors:
+    value: true
+save_steps:
+    value: 20
+save_strategy:
+    value: steps
+save_total_limit:
+    value: 3
+seed:
+    value: 42
+sep_token_id:
+    value: null
+skip_memory_metrics:
+    value: true
+sliding_window:
+    value: null
+suppress_tokens:
+    value: null
+task_specific_params:
+    value: null
+temperature:
+    value: 1
+tf_legacy_loss:
+    value: false
+tf32:
+    value: false
+tie_encoder_decoder:
+    value: false
+tie_word_embeddings:
+    value: true
+tokenizer_class:
+    value: null
+top_k:
+    value: 50
+top_p:
+    value: 1
+torch_compile:
+    value: false
+torch_compile_backend:
+    value: null
+torch_compile_mode:
+    value: null
+torch_empty_cache_steps:
+    value: null
+torchdynamo:
+    value: null
+torchscript:
+    value: false
+tpu_metrics_debug:
+    value: false
+tpu_num_cores:
+    value: null
+trackio_space_id:
+    value: trackio
+transformers_version:
+    value: 4.57.6
+typical_p:
+    value: 1
+use_bfloat16:
+    value: false
+use_cache:
+    value: false
+use_cpu:
+    value: false
+use_legacy_prediction_loop:
+    value: false
+use_liger_kernel:
+    value: false
+use_mps_device:
+    value: false
+use_sliding_window:
+    value: false
+vocab_size:
+    value: 151936
+warmup_ratio:
+    value: 0
+warmup_steps:
+    value: 6
+weight_decay:
+    value: 0.01

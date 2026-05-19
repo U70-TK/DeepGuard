@@ -3,7 +3,7 @@ import torch
 from typing import Optional, Tuple, Union, List
 from transformers import AutoTokenizer, AutoConfig, logging, AutoModelForCausalLM
 from transformers.modeling_outputs import CausalLMOutputWithPast, CausalLMOutputWithCrossAttentions
-from chem.hf import GPT2CustomConfig
+from sven.hf import GPT2CustomConfig
 from transformers import LlamaForCausalLM, Qwen2ForCausalLM
 from transformers.cache_utils import Cache, DynamicCache
 
@@ -391,6 +391,11 @@ def model_from_pretrained(lm_path, model_type, config):
             model_class = Qwen2Prefix
         else:
             assert False
+    else:
+        # Local path or unrecognised HF repo — let AutoModelForCausalLM
+        # read config.json to pick the right class.
+        assert model_type == 'lm', f"prefix tuning not supported for local path: {lm_path}"
+        model_class = AutoModelForCausalLM
     if config is None:
         model = model_class.from_pretrained(lm_path, local_files_only=True, **kwargs)
     else:
@@ -399,11 +404,10 @@ def model_from_pretrained(lm_path, model_type, config):
     return model
 
 def config_from_pretrained(lm_path, path):
-    kwargs = {'cache_dir': cache_dir}
     if lm_path == 'bigcode/santacoder':
-        return GPT2CustomConfig.from_pretrained(path, revision='mha', **kwargs)
+        return GPT2CustomConfig.from_pretrained(path, revision='mha')
     else:
-        return AutoConfig.from_pretrained(path, cache_dir=cache_dir, local_files_only=True)
+        return AutoConfig.from_pretrained(path, local_files_only=True)
 
 def save_model(model, path, args):
     if type(model) in (CodeLlamaPrefix, Qwen2Prefix, SeedCoderPrefix):
@@ -425,7 +429,7 @@ def save_model(model, path, args):
 def load_model(model_type, path, is_training, args):
     logging.set_verbosity_error()
 
-    tokenizer = AutoTokenizer.from_pretrained(path, cache_dir=cache_dir, local_files_only=True)
+    tokenizer = AutoTokenizer.from_pretrained(path, local_files_only=True)
     if tokenizer.eos_token_id is None:
         tokenizer.eos_token_id = tokenizer.bos_token_id
     if tokenizer.pad_token_id is None:

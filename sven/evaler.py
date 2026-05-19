@@ -295,24 +295,24 @@ class CoSecEvaler(EvalerBase):
         if self.args.base_model in MODEL_DIRS:
             self.args.base_model = MODEL_DIRS[self.args.base_model]
             print(self.args.base_model)
-        tokenizer = AutoTokenizer.from_pretrained(self.args.base_model, cache_dir=cache_dir, local_files_only=True)
+        tokenizer = AutoTokenizer.from_pretrained(self.args.base_model, local_files_only=True)
         if tokenizer.eos_token_id is None:
             tokenizer.eos_token_id = tokenizer.bos_token_id
         if tokenizer.pad_token_id is None:
             tokenizer.pad_token_id = tokenizer.eos_token_id
         if 'deepseek' in str(self.args.model_name).lower() or 'seed' in str(self.args.model_name).lower():
-            self.model = CodeLlamaModelLM.from_pretrained(self.args.model_name, device_map='auto', cache_dir=cache_dir, local_files_only=True)
-            base_model = AutoModelForCausalLM.from_pretrained(self.args.base_model, device_map='auto', cache_dir=cache_dir, local_files_only=True)
+            self.model = CodeLlamaModelLM.from_pretrained(self.args.model_name, device_map='auto', local_files_only=True)
+            base_model = AutoModelForCausalLM.from_pretrained(self.args.base_model, device_map='auto', local_files_only=True)
             base_model.resize_token_embeddings(len(tokenizer))
             self.sec_model = PeftModel.from_pretrained(base_model, self.args.sec_model)
         elif 'qwen' in str(self.args.model_name).lower():
-            self.model = Qwen2ModelLM.from_pretrained(self.args.model_name, device_map='auto', cache_dir=cache_dir, local_files_only=True)
-            base_model = AutoModelForCausalLM.from_pretrained(self.args.base_model, device_map='auto', cache_dir=cache_dir, local_files_only=True)
+            self.model = Qwen2ModelLM.from_pretrained(self.args.model_name, device_map='auto', local_files_only=True)
+            base_model = AutoModelForCausalLM.from_pretrained(self.args.base_model, device_map='auto', local_files_only=True)
             base_model.resize_token_embeddings(len(tokenizer))
             self.sec_model = PeftModel.from_pretrained(base_model, self.args.sec_model)
         else:
             raise NotImplementedError()
-        self.tokenizer = AutoTokenizer.from_pretrained(self.args.model_name, cache_dir=cache_dir, local_files_only=True)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.args.model_name, local_files_only=True)
         self.model.eval()
         self.sec_model.eval()
         self.input_device = self.model.device

@@ -5,9 +5,9 @@ sys.path.append(project_root)
 
 import argparse
 
-from chem.trainer import PrefixTrainer, TextPromptTrainer
-from chem.utils import set_seed, set_logging, set_devices
-from chem.constant import MODEL_DIRS
+from sven.trainer import PrefixTrainer, TextPromptTrainer
+from sven.utils import set_seed, set_logging, set_devices
+from sven.constant import MODEL_DIRS
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '6'
 

@@ -7,8 +7,8 @@ import scipy.stats
 from tabulate import tabulate
 from collections import OrderedDict
 
-from chem.constant import VAL_SCENARIOS
-from chem.constant import NOT_TRAINED, CWES_TRAINED
+from sven.constant import VAL_SCENARIOS
+from sven.constant import NOT_TRAINED, CWES_TRAINED
 
 class SecEvalRun:
     TOP_K = [1, 5, 10]

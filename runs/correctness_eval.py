@@ -10,8 +10,11 @@ import argparse
 import scipy.stats
 import pandas as pd
 import numpy as np
-from chem.constant import CWES, VAL_SCENARIOS, NOT_TRAINED
-from chem.constraints import constraints
+from sven.constant import CWES, VAL_SCENARIOS, NOT_TRAINED
+try:
+    from sven.constraints import constraints
+except ImportError:
+    constraints = {'pos': {}, 'neg': {}}
 
 def pass_at_k(n, c, k):
     if n == 0: 
@@ -87,7 +90,7 @@ def traverse_and_exec(path, func, **kwargs):
 
 def check_functional(vul_type, sub_type, sub_path):
     unittest_path = os.path.join('../data_eval/unit_test', vul_type, sub_type, 'functional.py')
-    subprocess.call(['python', unittest_path, '--path', sub_path])
+    subprocess.call(['python', unittest_path, '--path', os.path.abspath(sub_path)])
 
 
 def get_prompt(vul_type, scenario):

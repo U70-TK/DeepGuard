@@ -1,0 +1,99 @@
+{
+  "os": "Linux-5.14.0-570.44.1.el9_6.x86_64-x86_64-INTEL-R-_XEON-R-_PLATINUM_8570-with-glibc2.34",
+  "python": "CPython 3.12.12",
+  "startedAt": "2026-05-18T20:26:44.891584Z",
+  "args": [
+    "weight-steer/configs/qwen2.5-3b-insecure.yml"
+  ],
+  "program": "-m axolotl.cli.train",
+  "git": {
+    "remote": "https://github.com/U70-TK/DeepGuard.git",
+    "commit": "c92430aaa12b6ddef5a1723652192d22789db2d0"
+  },
+  "email": "wtkuan@163.com",
+  "root": "/scratch/tkwang/DeepGuard",
+  "host": "g12.nibi.sharcnet",
+  "executable": "/scratch/tkwang/DeepGuard/.venv/bin/python3",
+  "cpu_count": 112,
+  "cpu_count_logical": 112,
+  "gpu": "NVIDIA H100 80GB HBM3",
+  "gpu_count": 1,
+  "disk": {
+    "/": {
+      "total": "432835698688",
+      "used": "266313728"
+    }
+  },
+  "memory": {
+    "total": "2164178477056"
+  },
+  "gpu_nvidia": [
+    {
+      "name": "NVIDIA H100 80GB HBM3",
+      "memoryTotal": "85520809984",
+      "cudaCores": 16896,
+      "architecture": "Hopper",
+      "uuid": "GPU-eeca9840-1adf-71f5-342f-aaca4c92e464"
+    }
+  ],
+  "cudaVersion": "13.0",
+  "slurm": {
+    "cluster_name": "nibi",
+    "conf": "/etc/slurm/slurm.conf",
+    "cpus_on_node": "24",
+    "cpus_per_task": "24",
+    "gpus_on_node": "1",
+    "gtids": "0",
+    "home": "/opt/software/slurm/24.11.7",
+    "job_account": "def-m2nagapp_gpu",
+    "job_cpus_per_node": "24",
+    "job_end_time": "1779149852",
+    "job_gid": "3155901",
+    "job_gpus": "0",
+    "job_id": "14287739",
+    "job_name": "interactive",
+    "job_nodelist": "g12",
+    "job_num_nodes": "1",
+    "job_partition": "gpubase_interac",
+    "job_qos": "normal",
+    "job_start_time": "1779135452",
+    "job_uid": "3155901",
+    "job_user": "tkwang",
+    "jobid": "14287739",
+    "launch_node_ipaddr": "10.39.0.12",
+    "localid": "0",
+    "mem_per_node": "102400",
+    "mpi_type": "pmix",
+    "nnodes": "1",
+    "nodeid": "0",
+    "nodelist": "g12",
+    "oom_kill_step": "0",
+    "pmix_mapping_serv": "(vector,(0,1,1))",
+    "pmixp_abort_agent_port": "60971",
+    "prio_process": "0",
+    "procid": "0",
+    "pty_port": "60970",
+    "pty_win_col": "200",
+    "pty_win_row": "28",
+    "restart_count": "0",
+    "script_context": "prolog_task",
+    "srun_comm_host": "10.39.0.12",
+    "srun_comm_port": "60972",
+    "step_id": "4294967290",
+    "step_launcher_port": "60972",
+    "step_nodelist": "g12",
+    "step_num_nodes": "1",
+    "step_num_tasks": "1",
+    "step_tasks_per_node": "1",
+    "stepid": "4294967290",
+    "submit_dir": "/scratch/tkwang/DeepGuard",
+    "submit_host": "l2.nibi.sharcnet",
+    "task_pid": "2518049",
+    "tasks_per_node": "1",
+    "tmpdir": "/local/scratch/tkwang.14287739.0",
+    "topology_addr": "top.gswitch.g12",
+    "topology_addr_pattern": "switch.switch.node",
+    "tres_per_task": "cpu=24"
+  },
+  "writerId": "wc1h5dwc2c0vlt8x3p0asw8go1tbisbl"
+}

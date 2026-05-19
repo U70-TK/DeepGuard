@@ -148,7 +148,33 @@ def filter_cwe78_fps(src_dir, csv_path):
 def eval_scenario(args, evaler, vul_type, scenario):
     data_dir = os.path.join(args.data_dir, vul_type, scenario)
     output_dir = os.path.join(args.output_dir, vul_type, scenario)
-    os.makedirs(output_dir)
+    os.makedirs(output_dir, exist_ok=True)
+
+    csv_path = os.path.join(output_dir, 'codeql.csv')
+    output_srcs_dir = os.path.join(output_dir, 'output_srcs')
+    if os.path.exists(csv_path) and os.path.exists(output_srcs_dir):
+        with open(os.path.join(data_dir, 'info.json')) as f:
+            info = json.load(f)
+        src_files = [x for x in os.listdir(output_srcs_dir)
+                     if x.endswith('.' + info['language'])]
+        vuls = set()
+        with open(csv_path) as csv_f:
+            reader = csv.reader(csv_f)
+            for row in reader:
+                if len(row) < 5: continue
+                vuls.add(row[-5].split('/')[-1])
+        non_parsed_dir = os.path.join(output_dir, 'non_parsed_srcs')
+        non_parsed = len(os.listdir(non_parsed_dir)) if os.path.exists(non_parsed_dir) else 0
+        d = OrderedDict()
+        d['vul_type'] = vul_type
+        d['scenario'] = scenario
+        d['total'] = len(src_files)
+        d['sec'] = len(src_files) - len(vuls)
+        d['vul'] = len(vuls)
+        d['non_parsed'] = non_parsed
+        d['model_name'] = args.model_name
+        d['temp'] = args.temp
+        return d
 
     with open(os.path.join(data_dir, 'info.json')) as f:
         info = json.load(f)
@@ -164,7 +190,7 @@ def eval_scenario(args, evaler, vul_type, scenario):
 
     for srcs, name in [(output_srcs, 'output_srcs'), (non_parsed_srcs, 'non_parsed_srcs')]:
         src_dir = os.path.join(output_dir, name)
-        os.makedirs(src_dir)
+        os.makedirs(src_dir, exist_ok=True)
         for i, src in enumerate(srcs):
             findex = f'{str(i).zfill(2)}'
             if info['language'] == 'java':
@@ -219,9 +245,9 @@ def eval_all(args, evaler, vul_types):
     for vul_type in vul_types:
         output_dir = os.path.join(args.output_dir, vul_type)
         data_dir = os.path.join(args.data_dir, vul_type)
-        os.makedirs(output_dir)
+        os.makedirs(output_dir, exist_ok=True)
 
-        with open(os.path.join(output_dir, 'result.jsonl'), 'w') as f:
+        with open(os.path.join(output_dir, 'result.jsonl'), 'a') as f:
             for scenario in list(sorted(os.listdir(data_dir))):
                 d = eval_scenario(args, evaler, vul_type, scenario)
                 s = json.dumps(d)
